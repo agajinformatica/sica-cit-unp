@@ -1,0 +1,13 @@
+{
+  "name": "sistema-asistencia-cit-unp-backend",
+  "version": "1.0.0",
+  "description": "Backend en Arquitectura Hexagonal (Puertos y Adaptadores) para el Sistema Inteligente de Control de Asistencia y Evaluación de Prácticas en el CIT - UNP",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js",
+    "dev": "node --watch src/main.js",
+    "test": "node --test tests/hexagonal.test.js"
+  },
+  "author": "Bach. Arnold Jonatan Alvarado Girón - Escuela Profesional de Ingeniería Informática UNP",
+  "license": "MIT"
+}

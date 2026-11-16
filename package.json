@@ -1,0 +1,15 @@
+{
+  "name": "sica-cit-unp",
+  "version": "1.0.0",
+  "description": "Sistema Inteligente de Control de Asistencia con Alertas Automatizadas para la Gestión de Prácticas Preprofesionales y Profesionales en el CIT - UNP",
+  "main": "backend/src/main.js",
+  "scripts": {
+    "start": "node backend/src/main.js",
+    "test": "node --test backend/tests/hexagonal.test.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "Bach. Arnold Jonatan Alvarado Girón <agaj.informatica@gmail.com>",
+  "license": "MIT"
+}

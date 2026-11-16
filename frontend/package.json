@@ -1,0 +1,11 @@
+{
+  "name": "sistema-asistencia-cit-unp-frontend",
+  "version": "1.0.0",
+  "description": "Frontend Web del Sistema Inteligente de Control de Asistencia y Evaluación de Actividades para Prácticas Preprofesionales y Profesionales en el CIT - UNP (Proyección Multifacultad)",
+  "author": "Bach. Arnold Jonatan Alvarado Girón - Escuela Profesional de Ingeniería Informática UNP",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "dev": "python3 -m http.server 8080"
+  },
+  "license": "MIT"
+}

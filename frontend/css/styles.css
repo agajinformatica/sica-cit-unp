@@ -1,0 +1,460 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+
+:root {
+    /* Paleta Institucional Sobria - Universidad Nacional de Piura (UNP) */
+    --unp-navy-900: #0f2338;
+    --unp-navy-800: #16324f;
+    --unp-blue-primary: #1b4f72;
+    --unp-blue-soft: #eef3f8;
+    --unp-crimson: #7b2431;
+    --unp-crimson-soft: #f8eef0;
+    --unp-ochre: #9a7b2c;
+    --unp-ochre-soft: #f9f5eb;
+    --unp-green-muted: #235d42;
+    --unp-green-soft: #edf5f1;
+    --bg-main: #f6f8fa;
+    --card-border: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+}
+
+body {
+    background-color: var(--bg-main);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--text-primary);
+    font-size: 0.895rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.018em;
+    color: #0f172a;
+}
+
+.tabular-nums, td, .server-clock, .progress-bar, h3 {
+    font-variant-numeric: tabular-nums;
+}
+
+.lucide-svg {
+    display: inline-block;
+    vertical-align: -0.16em;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    flex-shrink: 0;
+}
+
+/* Botones y utilidades institucionales UNP */
+.bg-primary, .btn-primary {
+    background-color: var(--unp-blue-primary) !important;
+    border-color: var(--unp-blue-primary) !important;
+    color: #ffffff !important;
+    box-shadow: 0 1px 2px rgba(27, 79, 114, 0.15);
+}
+.btn-primary:hover {
+    background-color: var(--unp-navy-800) !important;
+    border-color: var(--unp-navy-800) !important;
+}
+.btn-outline-primary {
+    color: var(--unp-blue-primary) !important;
+    border-color: #cbd5e1 !important;
+    background: #ffffff;
+}
+.btn-outline-primary:hover {
+    background-color: var(--unp-blue-soft) !important;
+    border-color: var(--unp-blue-primary) !important;
+    color: var(--unp-blue-primary) !important;
+}
+.text-primary {
+    color: var(--unp-blue-primary) !important;
+}
+.bg-primary-subtle {
+    background-color: var(--unp-blue-soft) !important;
+    color: var(--unp-blue-primary) !important;
+    border-color: #d5e2ee !important;
+}
+.bg-success, .btn-success {
+    background-color: var(--unp-green-muted) !important;
+    border-color: var(--unp-green-muted) !important;
+    color: #ffffff !important;
+}
+.text-success {
+    color: var(--unp-green-muted) !important;
+}
+.bg-success-subtle {
+    background-color: var(--unp-green-soft) !important;
+    color: var(--unp-green-muted) !important;
+    border-color: #cce2d6 !important;
+}
+.bg-danger, .btn-danger {
+    background-color: var(--unp-crimson) !important;
+    border-color: var(--unp-crimson) !important;
+}
+.text-danger {
+    color: var(--unp-crimson) !important;
+}
+.bg-danger-subtle {
+    background-color: var(--unp-crimson-soft) !important;
+    color: var(--unp-crimson) !important;
+    border-color: #e6ced2 !important;
+}
+.bg-warning-subtle {
+    background-color: var(--unp-ochre-soft) !important;
+    color: #6e551c !important;
+    border-color: #e8dcc2 !important;
+}
+.text-warning-emphasis {
+    color: #6e551c !important;
+}
+.bg-info-subtle {
+    background-color: #eef4f7 !important;
+    color: #2c526d !important;
+    border-color: #d2e1ea !important;
+}
+.text-info-emphasis {
+    color: #2c526d !important;
+}
+
+/* Barra Lateral Institucional UNP */
+.sidebar-unp {
+    width: 276px;
+    min-height: 100vh;
+    background: var(--unp-navy-900);
+    color: #cbd5e1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1030;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-brand {
+    padding: 1.2rem 1.15rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(0, 0, 0, 0.14);
+}
+
+.unp-shield-sidebar {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+    background: #ffffff;
+    border-radius: 50%;
+    padding: 3px;
+    border: 1.5px solid rgba(212, 180, 106, 0.7);
+}
+
+.unp-fii-topbar {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.nav-unp .nav-link {
+    color: #94a3b8;
+    padding: 0.62rem 1rem;
+    margin: 0.14rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.855rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.16s ease;
+    cursor: pointer;
+    border-left: 2.5px solid transparent;
+}
+
+.nav-unp .nav-link:hover {
+    color: #f1f5f9;
+    background: rgba(255, 255, 255, 0.045);
+}
+
+.nav-unp .nav-link.active {
+    color: #ffffff;
+    background: var(--unp-navy-800);
+    border-left: 2.5px solid #c8a95b;
+    font-weight: 600;
+}
+
+/* Contenedor Principal */
+.main-wrapper {
+    margin-left: 276px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar-unp {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--card-border);
+    padding: 0.65rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
+
+.role-pill-unp {
+    background-color: var(--unp-blue-soft);
+    color: var(--unp-blue-primary);
+    border: 1px solid #d0deec;
+    font-weight: 600;
+    font-size: 0.77rem;
+    padding: 0.36rem 0.75rem;
+    border-radius: 0.45rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.server-clock {
+    background: #f8fafc;
+    color: #1e293b;
+    padding: 0.36rem 0.78rem;
+    border-radius: 0.45rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.79rem;
+    font-weight: 600;
+    border: 1px solid #cbd5e1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+/* Tarjetas y KPIs */
+.card-custom {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 0.65rem;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.035);
+}
+
+.kpi-card {
+    border-top: 2.5px solid var(--unp-blue-primary);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kpi-card:hover {
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.055);
+}
+
+.kpi-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 0.55rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tablas Profesionales */
+.table > thead > tr > th {
+    background-color: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.73rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-bottom: 1px solid #e2e8f0;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.table > tbody > tr > td {
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+}
+
+.badge {
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 0.32em 0.65em;
+    border-radius: 0.375rem;
+}
+
+/* Semáforo Predictivo Mate / Sobrio */
+.semaforo-pill {
+    padding: 0.25rem 0.62rem;
+    border-radius: 0.375rem;
+    font-size: 0.74rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.38rem;
+}
+.semaforo-verde { background: var(--unp-green-soft); color: var(--unp-green-muted); border: 1px solid #cbe0d4; }
+.semaforo-ambar { background: var(--unp-ochre-soft); color: #6e551c; border: 1px solid #e5d7b8; }
+.semaforo-rojo  { background: var(--unp-crimson-soft); color: var(--unp-crimson); border: 1px solid #e3c6ca; }
+
+/* Vista Previa WhatsApp Sobria */
+.whatsapp-preview-box {
+    background-color: #f1efeb;
+    border-radius: 0.55rem;
+    padding: 1rem;
+    border: 1px solid #dfdcd5;
+}
+
+.whatsapp-bubble {
+    background: #e9f5e1;
+    color: #1e293b;
+    border-radius: 0.5rem;
+    padding: 0.75rem 0.95rem;
+    font-size: 0.825rem;
+    border: 1px solid #d3e6c6;
+    max-width: 95%;
+}
+
+/* Estrellas Suaves Vectoriales (1-5) */
+.star-rating-btn {
+    color: #cbd5e1;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0 3px;
+    transition: transform 0.12s ease, color 0.12s ease;
+}
+.star-rating-btn:hover {
+    transform: scale(1.08);
+}
+.star-rating-btn.active {
+    color: var(--unp-ochre);
+}
+
+/* Hoja de Constancia Oficial con Escudos UNP */
+.constancia-sheet {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    outline: 2px double var(--unp-navy-800);
+    outline-offset: -8px;
+    padding: 2.2rem 2.6rem;
+    border-radius: 0.35rem;
+    font-family: 'Times New Roman', Times, serif;
+    color: #111827;
+}
+
+.constancia-logo {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+
+/* Formularios y Validación Inline Institucional (Sin alert nativo) */
+.form-control, .form-select {
+    border-color: #cbd5e1;
+    font-size: 0.86rem;
+    border-radius: 0.45rem;
+}
+.form-control:focus, .form-select:focus {
+    border-color: var(--unp-blue-primary);
+    box-shadow: 0 0 0 3px rgba(27, 79, 114, 0.12);
+}
+.input-error-unp {
+    border-color: var(--unp-crimson) !important;
+    background-color: #fdfafb !important;
+    box-shadow: 0 0 0 3px rgba(123, 36, 49, 0.1) !important;
+}
+.inline-validation-banner {
+    background-color: var(--unp-crimson-soft);
+    color: var(--unp-crimson);
+    border: 1px solid #e4c6ca;
+    border-left: 3.5px solid var(--unp-crimson);
+    border-radius: 0.45rem;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.81rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 0.5rem;
+}
+
+/*Notificación Flotante Institucional (Toast Profesional UNP) */
+.toast-unp-card {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.6rem;
+    box-shadow: 0 10px 25px rgba(15, 35, 56, 0.12);
+    min-width: 360px;
+    max-width: 430px;
+    overflow: hidden;
+}
+.toast-unp-card.toast-type-success { border-left: 4px solid var(--unp-green-muted); }
+.toast-unp-card.toast-type-danger  { border-left: 4px solid var(--unp-crimson); }
+.toast-unp-card.toast-type-warning { border-left: 4px solid var(--unp-ochre); }
+.toast-unp-card.toast-type-primary { border-left: 4px solid var(--unp-blue-primary); }
+
+/* Pantalla de Autenticación Institucional UNP (CU-01) */
+.auth-screen-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--unp-navy-900) 0%, var(--unp-navy-800) 55%, #1d3f63 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.auth-card-unp {
+    background: #ffffff;
+    border-radius: 0.85rem;
+    border-top: 4px solid var(--unp-ochre);
+    box-shadow: 0 20px 45px rgba(8, 20, 34, 0.38);
+    max-width: 900px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.auth-left-panel {
+    background: linear-gradient(180deg, #132a42 0%, #0d1e30 100%);
+    color: #f8fafc;
+    padding: 2.5rem 2.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.auth-shield-logo {
+    width: 74px;
+    height: 74px;
+    object-fit: contain;
+    background: #ffffff;
+    border-radius: 50%;
+    padding: 4px;
+    border: 2px solid var(--unp-ochre);
+}
+
+.credential-pill-btn {
+    background: #f8fafc;
+    border: 1px solid #dbe3ec;
+    border-radius: 0.5rem;
+    padding: 0.55rem 0.75rem;
+    text-align: left;
+    transition: all 0.15s ease;
+    cursor: pointer;
+    width: 100%;
+}
+.credential-pill-btn:hover {
+    background: var(--unp-blue-soft);
+    border-color: var(--unp-blue-primary);
+}
+
+@media print {
+    .sidebar-unp, .topbar-unp, .no-print {
+        display: none !important;
+    }
+    .main-wrapper {
+        margin-left: 0 !important;
+    }
+    .constancia-sheet {
+        border: none;
+        outline: none;
+        padding: 0;
+    }
+}

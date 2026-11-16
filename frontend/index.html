@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICA-CIT | Sistema de Control de Asistencia y Seguimiento de Prácticas - UNP</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Lucide Icons (Fine-stroke 1.65px vector icons) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- ======================================================================= -->
+    <!-- PANTALLA DE AUTENTICACIÓN INSTITUCIONAL UNP (CONTROL DE ROLES Y VISTAS) -->
+    <!-- ======================================================================= -->
+    <div id="authLoginScreen" class="auth-screen-wrapper">
+        <div class="auth-card-unp row g-0">
+            <!-- Panel Izquierdo Institucional -->
+            <div class="col-lg-5 auth-left-panel">
+                <div>
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <img src="assets/logo_unp.png" alt="Escudo UNP" class="auth-shield-logo">
+                        <img src="assets/logo_fii_unp.png" alt="Escudo FII UNP" style="width:58px;height:58px;object-fit:contain;background:#fff;border-radius:50%;padding:4px;">
+                    </div>
+                    <div class="text-uppercase fw-semibold" style="font-size:0.72rem;letter-spacing:0.08em;color:#d4b46a;">Universidad Nacional de Piura</div>
+                    <h4 class="fw-bold text-white mt-1 mb-2">Sistema de Control de Asistencia y Seguimiento de Prácticas</h4>
+                    <p class="small text-white-50 mb-4">Centro de Informática y Telecomunicaciones (CIT - UNP) · Escuela Profesional de Ingeniería Informática y Facultades.</p>
+
+                    <div class="small text-white-50 border-top border-secondary border-opacity-25 pt-3">
+                        <div class="fw-semibold text-white mb-2">Control de Acceso Basado en Roles (RBAC):</div>
+                        <div class="mb-1">· <strong>Jefatura CIT:</strong> Gestión integral, convenios, alertas y reportes.</div>
+                        <div class="mb-1">· <strong>Supervisor de Área:</strong> Monitoreo de su área y calificación de actividades.</div>
+                        <div>· <strong>Practicante:</strong> Marcación de turno, bitácora diaria y récord personal.</div>
+                    </div>
+                </div>
+                <div class="small text-white-50 mt-4 pt-3 border-top border-secondary border-opacity-25" style="font-size:0.74rem;">
+                    Campus Universitario de Castilla — Piura, Perú · 2026
+                </div>
+            </div>
+
+            <!-- Panel Derecho: Formulario de Inicio de Sesión -->
+            <div class="col-lg-7 p-4 p-md-5 bg-white">
+                <div class="mb-4">
+                    <h5 class="fw-bold text-dark mb-1">Iniciar Sesión Institucional</h5>
+                    <p class="text-secondary small mb-0">Ingrese su correo institucional, usuario o Código Universitario UNP para acceder a los módulos autorizados para su rol.</p>
+                </div>
+
+                <form onsubmit="procesarInicioSesion(event)" class="mb-4">
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Usuario / Código Universitario UNP / Correo:</label>
+                        <input type="text" id="loginInputUsuario" class="form-control" oninput="limpiarErrorLogin()" placeholder="Ej. lsaavedray@unp.edu.pe o 0512021045" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Contraseña (Para practicantes es su N.° de DNI):</label>
+                        <input type="password" id="loginInputPassword" class="form-control" oninput="limpiarErrorLogin()" placeholder="Ingrese su contraseña o DNI" required>
+                    </div>
+
+                    <div id="loginValidationBanner" class="inline-validation-banner d-none mb-3">
+                        <i data-lucide="alert-circle" style="width:16px;height:16px;"></i>
+                        <span id="loginValidationText">Credenciales no válidas. Verifique su usuario y contraseña.</span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold d-inline-flex align-items-center justify-content-center gap-2">
+                        <i data-lucide="log-in" style="width:16px;height:16px;"></i>
+                        <span>Ingresar a la Plataforma SICA - CIT</span>
+                    </button>
+                </form>
+
+                <div class="border-top pt-3">
+                    <div class="small fw-semibold text-secondary mb-2">Cuentas Institucionales Habilitadas (Clic para autocompletar):</div>
+                    <div class="row g-2">
+                        <div class="col-12">
+                            <button type="button" class="credential-pill-btn d-flex justify-content-between align-items-center" onclick="autocompletarLogin('lsaavedray@unp.edu.pe', 'admin2026')">
+                                <div>
+                                    <div class="fw-semibold text-dark small">1. Jefatura / Administración CIT - UNP</div>
+                                    <div class="text-secondary" style="font-size:0.75rem;">Mg. Ing. Luis Armando Saavedra Yarleque · <span class="font-monospace">lsaavedray@unp.edu.pe</span></div>
+                                </div>
+                                <span class="badge bg-primary-subtle text-primary border">Rol: ADMIN_CIT</span>
+                            </button>
+                        </div>
+                        <div class="col-12">
+                            <button type="button" class="credential-pill-btn d-flex justify-content-between align-items-center" onclick="autocompletarLogin('cmendozar@unp.edu.pe', 'sup2026')">
+                                <div>
+                                    <div class="fw-semibold text-dark small">2. Supervisor de Área Técnica CIT</div>
+                                    <div class="text-secondary" style="font-size:0.75rem;">Ing. Carlos Alberto Mendoza Ruiz (Desarrollo) · <span class="font-monospace">cmendozar@unp.edu.pe</span></div>
+                                </div>
+                                <span class="badge bg-info-subtle text-info-emphasis border">Rol: SUPERVISOR</span>
+                            </button>
+                        </div>
+                        <div class="col-12">
+                            <button type="button" class="credential-pill-btn d-flex justify-content-between align-items-center" onclick="autocompletarLogin('0512021045', '73461414')">
+                                <div>
+                                    <div class="fw-semibold text-dark small">3. Practicante (Preprofesional / Profesional)</div>
+                                    <div class="text-secondary" style="font-size:0.75rem;">Arnold Jonatan Alvarado Girón · Cód. UNP: <span class="font-monospace">0512021045</span> / DNI: <span class="font-monospace">73461414</span></div>
+                                </div>
+                                <span class="badge bg-success-subtle text-success border">Rol: PRACTICANTE</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-secondary mt-2" style="font-size:0.73rem;">
+                        * Cualquier nuevo practicante inscrito en el padrón puede iniciar sesión con su <strong>Código Universitario UNP</strong> como usuario y su <strong>DNI</strong> como contraseña.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENEDOR DE LA APLICACIÓN AUTENTICADA -->
+    <div id="appAuthenticatedContainer" class="d-none">
+
+    <!-- SIDEBAR INSTITUCIONAL UNP -->
+    <aside class="sidebar-unp">
+        <div class="sidebar-brand d-flex align-items-center gap-3">
+            <img src="assets/logo_unp.png" alt="Escudo Oficial UNP" class="unp-shield-sidebar">
+            <div>
+                <div class="fw-bold text-white" style="font-size: 0.88rem; letter-spacing: 0.2px;">UNIVERSIDAD NACIONAL DE PIURA</div>
+                <div class="text-white-50" style="font-size: 0.72rem;">CIT - UNP · Ing. Informática</div>
+            </div>
+        </div>
+
+        <div class="px-3 pt-3 pb-1">
+            <div class="text-uppercase text-white-50 fw-semibold" style="font-size: 0.66rem; letter-spacing: 0.08em;">Módulos Operativos</div>
+        </div>
+
+        <nav class="nav flex-column nav-unp flex-grow-1">
+            <a class="nav-link active" data-view="dashboard" onclick="switchView('dashboard')">
+                <i data-lucide="layout-dashboard" style="width:18px;height:18px;"></i>
+                <span>Panel Principal CIT</span>
+            </a>
+            <a class="nav-link" data-view="marcacion" onclick="switchView('marcacion')">
+                <i data-lucide="clock-4" style="width:18px;height:18px;"></i>
+                <span>Asistencia y Actividades</span>
+            </a>
+            <a class="nav-link" data-view="actividades" onclick="switchView('actividades')">
+                <i data-lucide="clipboard-check" style="width:18px;height:18px;"></i>
+                <span>Supervisión de Actividades</span>
+            </a>
+            <a class="nav-link" data-view="alertas" onclick="switchView('alertas')">
+                <i data-lucide="bell-ring" style="width:18px;height:18px;"></i>
+                <span>Centro de Notificaciones</span>
+            </a>
+            <a class="nav-link" data-view="predictivo" onclick="switchView('predictivo')">
+                <i data-lucide="activity" style="width:18px;height:18px;"></i>
+                <span>Análisis de Ausentismo</span>
+            </a>
+            <a class="nav-link" data-view="convenios" onclick="switchView('convenios')">
+                <i data-lucide="user-plus" style="width:18px;height:18px;"></i>
+                <span>Practicantes y Convenios</span>
+            </a>
+            <a class="nav-link" data-view="reportes" onclick="switchView('reportes')">
+                <i data-lucide="file-spreadsheet" style="width:18px;height:18px;"></i>
+                <span>Reportes y Constancias</span>
+            </a>
+        </nav>
+
+        <div class="p-3 border-top border-secondary border-opacity-25 small text-white-50">
+            <div class="fw-semibold text-white d-flex align-items-center gap-2 mb-1">
+                <i data-lucide="user-round-check" style="width:15px;height:15px;color:#c8a95b;"></i>
+                <span id="sidebarUserSessionName">Mg. Ing. Luis Saavedra</span>
+            </div>
+            <div id="sidebarUserSessionRole" style="font-size: 0.71rem;">Jefatura / Administración CIT - UNP</div>
+        </div>
+    </aside>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-wrapper">
+
+        <!-- TOPBAR INSTITUCIONAL -->
+        <header class="topbar-unp d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <img src="assets/logo_fii_unp.png" alt="Logo FII UNP" class="unp-fii-topbar me-1" title="Facultad de Ingeniería Industrial - Escuela Profesional de Ingeniería Informática">
+                <div id="topbarDependenciaWrapper" class="d-inline-flex align-items-center gap-2">
+                    <span class="fw-semibold text-secondary small">Dependencia:</span>
+                    <select class="form-select form-select-sm fw-medium" style="width: 315px;" onchange="handleDependenciaFilter(this.value)">
+                        <option value="TODAS">Todas las Dependencias Registradas</option>
+                        <option value="CIT-UNP">CIT - Centro de Informática y Telecomunicaciones</option>
+                        <option value="FII-UNP">Facultad de Ingeniería Industrial — Centro de Cómputo</option>
+                        <option value="FCA-UNP">Facultad de Ciencias Administrativas — Unidad de Sistemas</option>
+                    </select>
+                </div>
+                <span id="activeRoleBadge" class="role-pill-unp">
+                    <i data-lucide="shield" style="width:15px;height:15px;"></i>
+                    <span>Mg. Ing. Luis Armando Saavedra Yarleque · Jefatura CIT</span>
+                </span>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-sm btn-outline-primary position-relative px-2" onclick="switchView('alertas')" title="Notificaciones Pendientes">
+                    <i data-lucide="bell" style="width:16px;height:16px;"></i>
+                    <span id="topAlertCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.65rem;">1</span>
+                </button>
+
+                <div class="server-clock">
+                    <i data-lucide="clock" style="width:14px;height:14px;color:#1b4f72;"></i>
+                    <span id="serverClockTopText">Cargando...</span>
+                </div>
+
+                <button type="button" class="btn btn-sm btn-outline-danger fw-medium d-inline-flex align-items-center gap-1" onclick="cerrarSesionInstitucional()" title="Cerrar Sesión">
+                    <i data-lucide="log-out" style="width:14px;height:14px;"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- CONTENIDO DINÁMICO DE LAS 7 VISTAS -->
+        <main class="container-fluid p-4 flex-grow-1">
+
+            <!-- =================================================================== -->
+            <!-- VISTA 1: PANEL PRINCIPAL CIT - UNP                                  -->
+            <!-- =================================================================== -->
+            <section id="view-dashboard" class="view-section">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                    <div>
+                        <h5 class="fw-bold mb-1">Panel de Gestión de Prácticas Preprofesionales y Profesionales</h5>
+                        <p class="text-secondary small mb-0">Supervisión en tiempo real de asistencia por turnos, validación de actividades técnicas y notificaciones institucionales.</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button id="btnDashboardNuevoPracticante" class="btn btn-sm btn-primary fw-medium d-inline-flex align-items-center gap-2" onclick="switchView('convenios')">
+                            <i data-lucide="user-plus" style="width:15px;height:15px;"></i>
+                            <span>Agregar Practicante</span>
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary fw-medium d-inline-flex align-items-center gap-2" onclick="switchView('marcacion')">
+                            <i data-lucide="clock-4" style="width:15px;height:15px;"></i>
+                            <span>Registrar Asistencia / Actividad</span>
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary fw-medium d-inline-flex align-items-center gap-2" onclick="switchView('reportes')">
+                            <i data-lucide="bar-chart-3" style="width:15px;height:15px;"></i>
+                            <span>Reportes y Constancias</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 5 TARJETAS KPI -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md col-sm-6">
+                        <div class="card-custom kpi-card p-3 h-100">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="text-secondary small fw-medium">Practicantes Activos</div>
+                                    <h3 id="kpiTotalPracticantes" class="fw-bold mb-1 mt-1">6</h3>
+                                    <span class="small text-secondary">Preprofesional · Profesional</span>
+                                </div>
+                                <div class="kpi-icon bg-primary-subtle text-primary">
+                                    <i data-lucide="users" style="width:20px;height:20px;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md col-sm-6">
+                        <div class="card-custom kpi-card p-3 h-100">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="text-secondary small fw-medium">Asistencia Puntual Hoy</div>
+                                    <h3 id="kpiPuntualesHoy" class="fw-bold mb-1 mt-1 text-success">3 / 6</h3>
+                                    <span class="small text-success">Turnos verificados en línea</span>
+                                </div>
+                                <div class="kpi-icon bg-success-subtle text-success">
+                                    <i data-lucide="user-check" style="width:20px;height:20px;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md col-sm-6">
+                        <div class="card-custom kpi-card p-3 h-100">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="text-secondary small fw-medium">Tardanzas / Faltas Hoy</div>
+                                    <h3 id="kpiIncidenciasHoy" class="fw-bold mb-1 mt-1 text-danger">2</h3>
+                                    <span class="small text-danger">Notificadas a supervisión</span>
+                                </div>
+                                <div class="kpi-icon bg-danger-subtle text-danger">
+                                    <i data-lucide="clock-alert" style="width:20px;height:20px;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md col-sm-6">
+                        <div class="card-custom kpi-card p-3 h-100" style="cursor:pointer;" onclick="switchView('actividades')">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="text-secondary small fw-medium">Actividades por Validar</div>
+                                    <h3 id="kpiActividadesRevision" class="fw-bold mb-1 mt-1 text-warning-emphasis">3</h3>
+                                    <span class="small text-warning-emphasis">Pendientes de conformidad</span>
+                                </div>
+                                <div class="kpi-icon bg-warning-subtle text-warning-emphasis">
+                                    <i data-lucide="clipboard-list" style="width:20px;height:20px;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md col-sm-12">
+                        <div class="card-custom kpi-card p-3 h-100" style="cursor:pointer;" onclick="switchView('alertas')">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="text-secondary small fw-medium">Notificaciones Atendidas</div>
+                                    <h3 id="kpiAlertasAtendidas" class="fw-bold mb-1 mt-1 text-primary">75%</h3>
+                                    <span class="small text-secondary">WhatsApp y Correo Institucional</span>
+                                </div>
+                                <div class="kpi-icon bg-info-subtle text-info-emphasis">
+                                    <i data-lucide="send" style="width:19px;height:19px;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TABLA PRINCIPAL DE MONITOREO EN VIVO -->
+                <div class="card-custom p-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
+                            <i data-lucide="radio" style="width:17px;height:17px;color:#1b4f72;"></i>
+                            <span>Control Diario de Practicantes — Centro de Informática y Telecomunicaciones (CIT - UNP)</span>
+                        </h6>
+                        <span class="badge bg-light text-secondary border">Jornada Máxima: Preprofesional 30 h/sem · Profesional 48 h/sem</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Practicante</th>
+                                    <th>Área Técnica / Supervisor</th>
+                                    <th>Modalidad y Turno</th>
+                                    <th>Registro del Día</th>
+                                    <th>Progreso de Horas Acumuladas</th>
+                                    <th>Desempeño</th>
+                                    <th>Seguimiento de Asistencia</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashboardPracticantesBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =================================================================== -->
+            <!-- VISTA 2: TERMINAL DE ASISTENCIA Y BITÁCORA DIARIA                   -->
+            <!-- =================================================================== -->
+            <section id="view-marcacion" class="view-section d-none">
+                <div class="row g-4">
+                    <div class="col-lg-5">
+                        <div class="card-custom p-4 h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge bg-primary-subtle text-primary border d-inline-flex align-items-center gap-1 px-2 py-1">
+                                    <i data-lucide="terminal" style="width:14px;height:14px;"></i>
+                                    <span>Terminal de Registro Horario</span>
+                                </span>
+                                <span class="small text-secondary fw-medium">Campus Universitario UNP</span>
+                            </div>
+                            <div class="text-center py-3 my-2 rounded-3" style="background-color: #0f2338; color: #f8fafc; border-bottom: 2.5px solid #9a7b2c;">
+                                <div class="small text-white-50 text-uppercase" style="font-size:0.7rem;letter-spacing:0.06em;">Hora Oficial del Servidor (America/Lima)</div>
+                                <div id="terminalLiveClock" class="display-6 fw-bold font-monospace tabular-nums mt-1" style="color: #f1f5f9;">08:05:00</div>
+                            </div>
+
+                            <div class="mb-3 mt-3">
+                                <label class="form-label fw-semibold small">Practicante en Turno:</label>
+                                <select id="selectPracticanteMarcacion" class="form-select" onchange="cambiarPracticanteMarcacion(this.value)"></select>
+                            </div>
+
+                            <div class="p-3 bg-light rounded-3 border mb-3 tabular-nums">
+                                <div id="marcCardNombre" class="fw-bold text-dark">Arnold Jonatan Alvarado Girón</div>
+                                <div id="marcCardModalidad" class="small text-primary fw-medium">Modalidad PROFESIONAL</div>
+                                <div id="marcCardArea" class="small text-secondary mt-1">Desarrollo de Software</div>
+                                <div id="marcCardTurno" class="small fw-medium text-dark mt-1">Turno: 08:00 - 16:00</div>
+                                <hr class="my-2">
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span class="text-secondary">Jornada Semana Actual:</span>
+                                    <strong id="marcCardSemanalText">38 / 48 h</strong>
+                                </div>
+                                <div class="progress mb-2" style="height: 6px;">
+                                    <div id="marcCardSemanalBar" class="progress-bar bg-primary" style="width: 79%"></div>
+                                </div>
+                                <div class="d-flex justify-content-between small mb-1">
+                                    <span class="text-secondary">Récord Total Acumulado:</span>
+                                    <strong id="marcCardTotalText">438.5 / 480 h</strong>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div id="marcCardTotalBar" class="progress-bar bg-success" style="width: 91%"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label fw-semibold small">Hora de Marcación:</label>
+                                <input type="time" id="inputHoraSimulada" class="form-control tabular-nums" value="08:22">
+                                <div class="form-text small">Tolerancia configurada por turno: <strong>10 minutos</strong>.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <div class="card-custom p-4 h-100">
+                            <h6 class="fw-bold mb-1 d-flex align-items-center gap-2">
+                                <i data-lucide="file-check-2" style="width:18px;height:18px;color:#1b4f72;"></i>
+                                <span>Bitácora Diaria de Actividades Técnicas</span>
+                            </h6>
+                            <p class="text-secondary small mb-3">Detalle las labores técnicas efectuadas durante su jornada en el CIT - UNP para su validación y conformidad por el supervisor de área.</p>
+
+                            <div class="row g-3">
+                                <div class="col-md-7">
+                                    <label class="form-label fw-medium small">Categoría Técnica:</label>
+                                    <select id="inputCategoriaActividad" class="form-select">
+                                        <option value="DESARROLLO_SOFTWARE">Desarrollo de Software y Sistemas Web</option>
+                                        <option value="REDES_TELECOM">Redes, Fibra Óptica y Telecomunicaciones</option>
+                                        <option value="SOPORTE_TECNICO">Soporte Técnico y Mantenimiento de Equipos</option>
+                                        <option value="SERVIDORES_BD">Administración de Servidores y Base de Datos</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-5">
+                                    <label class="form-label fw-medium small">Horas Efectivas de la Sesión:</label>
+                                    <input type="number" id="inputHorasSesion" class="form-control tabular-nums" value="6.0" step="0.5" min="1" max="8">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-medium small">Descripción de la Actividad Realizada en el Turno: <span class="text-danger">*</span></label>
+                                    <textarea id="inputDescripcionActividad" class="form-control" rows="3" oninput="limpiarValidacionActividad()" placeholder="Describa la tarea técnica ejecutada durante el turno..."></textarea>
+                                    <!-- Banner de validación en-aplicación (Reemplaza cualquier alert nativo) -->
+                                    <div id="inlineValidationActividad" class="inline-validation-banner d-none">
+                                        <i data-lucide="alert-circle" style="width:16px;height:16px;"></i>
+                                        <span id="inlineValidationActividadText">Para registrar la salida del turno, detalle la actividad técnica ejecutada.</span>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-medium small">Entregable o Evidencia Técnica (Incidencia, Commit, Informe o Laboratorio):</label>
+                                    <input type="text" id="inputEntregableActividad" class="form-control" placeholder="Ej. Incidencia CIT #418 atendida / Commit en repositorio institucional">
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-success w-100 py-2 fw-semibold d-inline-flex align-items-center justify-content-center gap-2" onclick="ejecutarMarcacionConActividad('ENTRADA')">
+                                        <i data-lucide="log-in" style="width:16px;height:16px;"></i>
+                                        <span>Registrar Entrada</span>
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-primary w-100 py-2 fw-semibold d-inline-flex align-items-center justify-content-center gap-2" onclick="ejecutarMarcacionConActividad('SALIDA')">
+                                        <i data-lucide="check-square" style="width:16px;height:16px;"></i>
+                                        <span>Registrar Salida y Actividad</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =================================================================== -->
+            <!-- VISTA 3: SUPERVISIÓN Y EVALUACIÓN DE ACTIVIDADES                    -->
+            <!-- =================================================================== -->
+            <section id="view-actividades" class="view-section d-none">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                    <div>
+                        <h5 class="fw-bold mb-1">Supervisión y Conformidad de Actividades de Prácticas</h5>
+                        <p class="text-secondary small mb-0">Revisión técnica de las labores diarias registradas por los practicantes, calificación de desempeño y validación de horas.</p>
+                    </div>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-primary" onclick="filtrarActividades('TODAS')">Todas (<span id="countActTotales">0</span>)</button>
+                        <button class="btn btn-outline-primary" onclick="filtrarActividades('APROBADA')">Aprobadas (<span id="countActAprobadas">0</span>)</button>
+                        <button class="btn btn-outline-primary" onclick="filtrarActividades('PENDIENTE_REVISION')">Pendientes (<span id="countActPendientes">0</span>)</button>
+                        <button class="btn btn-outline-primary" onclick="filtrarActividades('OBSERVADA')">Observadas (<span id="countActObservadas">0</span>)</button>
+                    </div>
+                </div>
+
+                <div class="card-custom p-4">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Registro / Fecha</th>
+                                    <th>Practicante y Unidad</th>
+                                    <th>Actividad Técnica y Entregable</th>
+                                    <th class="text-center">Horas</th>
+                                    <th>Estado de Revisión y Calificación</th>
+                                    <th class="text-end">Evaluación</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaActividadesBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =================================================================== -->
+            <!-- VISTA 4: CENTRO DE NOTIFICACIONES WHATSAPP Y CORREO                 -->
+            <!-- =================================================================== -->
+            <section id="view-alertas" class="view-section d-none">
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-1">Centro de Notificaciones Institucionales (WhatsApp y Correo)</h5>
+                    <p class="text-secondary small mb-0">Seguimiento en tiempo real de las alertas automáticas despachadas a los supervisores de área y practicantes.</p>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <!-- Vista Previa WhatsApp -->
+                    <div class="col-lg-6">
+                        <div class="card-custom p-3 h-100">
+                            <div class="d-flex align-items-center justify-content-between border-bottom pb-2 mb-3">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="kpi-icon bg-success-subtle text-success" style="width:34px;height:34px;">
+                                        <i data-lucide="message-circle" style="width:17px;height:17px;"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold small text-dark">Detalle de Mensaje WhatsApp</div>
+                                        <div id="waPreviewDestinatario" class="text-secondary" style="font-size:0.74rem;">Destinatario</div>
+                                    </div>
+                                </div>
+                                <span class="badge bg-success-subtle text-success border">Canal WhatsApp</span>
+                            </div>
+                            <div class="whatsapp-preview-box">
+                                <div class="whatsapp-bubble">
+                                    <div id="waPreviewMensaje">Seleccione una notificación...</div>
+                                    <div class="text-end text-secondary mt-1 tabular-nums" style="font-size: 0.7rem;">
+                                        <span id="waPreviewHora">14:23</span> · Entregado
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vista Previa Correo Institucional -->
+                    <div class="col-lg-6">
+                        <div class="card-custom p-3 h-100">
+                            <div class="d-flex align-items-center justify-content-between border-bottom pb-2 mb-3">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="kpi-icon bg-primary-subtle text-primary" style="width:34px;height:34px;">
+                                        <i data-lucide="mail" style="width:17px;height:17px;"></i>
+                                    </div>
+                                    <div>
+                                        <div id="emailPreviewAsunto" class="fw-semibold small text-dark">Asunto del Correo</div>
+                                        <div class="text-secondary" style="font-size:0.74rem;">Destinatario: <span id="emailPreviewPara"></span></div>
+                                    </div>
+                                </div>
+                                <span class="badge bg-primary-subtle text-primary border">Correo Institucional</span>
+                            </div>
+                            <div id="emailPreviewCuerpo" class="p-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-custom p-4">
+                    <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                        <i data-lucide="history" style="width:17px;height:17px;color:#1b4f72;"></i>
+                        <span>Historial de Notificaciones Emitidas y Confirmación de Atención</span>
+                    </h6>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Fecha y Hora</th>
+                                    <th>Categoría de Alerta</th>
+                                    <th>Practicante / Unidad Operativa</th>
+                                    <th>Canal de Envío</th>
+                                    <th>Estado</th>
+                                    <th class="text-end">Gestión</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaAlertasBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =================================================================== -->
+            <!-- VISTA 5: ANÁLISIS PREDICTIVO DE AUSENTISMO                          -->
+            <!-- =================================================================== -->
+            <section id="view-predictivo" class="view-section d-none">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                    <div>
+                        <h5 class="fw-bold mb-1">Análisis Predictivo de Ausentismo y Proyección de Culminación</h5>
+                        <p class="text-secondary small mb-0">Monitoreo preventivo basado en tendencias de puntualidad, ritmo semanal de horas y calendario académico de la UNP.</p>
+                    </div>
+                    <div class="form-check form-switch bg-white px-4 py-2 rounded-3 border">
+                        <input class="form-check-input" type="checkbox" id="switchExamenesUnp" onchange="toggleSemanaExamenes(this.checked)">
+                        <label class="form-check-label fw-medium small text-dark" for="switchExamenesUnp">
+                            Periodo de Evaluaciones Parciales / Finales UNP
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card-custom p-4">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Practicante y Modalidad</th>
+                                    <th class="text-center">Índice Puntualidad</th>
+                                    <th class="text-center">Incidencias del Mes</th>
+                                    <th>Nivel de Riesgo</th>
+                                    <th>Factor de Seguimiento Identificado</th>
+                                    <th>Fecha Programada vs. Proyectada</th>
+                                    <th class="text-end">Acción Preventiva</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaPredictivoBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =================================================================== -->
+            <!-- VISTA 6: REGISTRO DE PRACTICANTES, DATOS PERSONALES Y CONVENIOS     -->
+            <!-- =================================================================== -->
+            <section id="view-convenios" class="view-section d-none">
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-1">Registro de Practicantes, Datos Personales y Convenios</h5>
+                    <p class="text-secondary small mb-0">Inscripción de estudiantes y egresados (código universitario UNP, DNI, datos de contacto y asignación de área técnica en el CIT - UNP o facultades).</p>
+                </div>
+
+                <div id="cardsDependenciasUnp" class="row g-3 mb-4"></div>
+
+                <!-- FORMULARIO COMPLETO DE DATOS PERSONALES, ACADÉMICOS Y CONVENIO -->
+                <div class="card-custom p-4 mb-4">
+                    <h6 class="fw-bold mb-3 d-flex align-items-center gap-2 border-bottom pb-2">
+                        <i data-lucide="user-plus" style="width:18px;height:18px;color:#1b4f72;"></i>
+                        <span>Ficha de Inscripción de Nuevo Practicante</span>
+                    </h6>
+
+                    <form onsubmit="registrarNuevoConvenio(event)" class="row g-3">
+                        <!-- 1. Datos Personales e Identificación -->
+                        <div class="col-12">
+                            <span class="badge bg-primary-subtle text-primary border">1. Identificación Universitaria y Datos Personales</span>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-medium">Código Universitario UNP: <span class="text-danger">*</span></label>
+                            <input type="text" id="nuevoCodigo" class="form-control tabular-nums" maxlength="10" placeholder="Ej. 0512022095" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small fw-medium">N.° de DNI: <span class="text-danger">*</span></label>
+                            <input type="text" id="nuevoDni" class="form-control tabular-nums" maxlength="8" placeholder="Ej. 74125896" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-medium">Apellido Paterno y Materno: <span class="text-danger">*</span></label>
+                            <input type="text" id="nuevoApellidos" class="form-control" placeholder="Ej. Palacios Reyes" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-medium">Nombres Completos: <span class="text-danger">*</span></label>
+                            <input type="text" id="nuevoNombres" class="form-control" placeholder="Ej. Luis Fernando" required>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label small fw-medium">Correo Institucional UNP: <span class="text-danger">*</span></label>
+                            <input type="email" id="nuevoCorreo" class="form-control" placeholder="lpalaciosr@alumnos.unp.edu.pe" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-medium">Celular / WhatsApp: <span class="text-danger">*</span></label>
+                            <input type="text" id="nuevoWhatsapp" class="form-control tabular-nums" placeholder="+51 968 123 456" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label small fw-medium">Dirección / Distrito de Residencia:</label>
+                            <input type="text" id="nuevoDireccion" class="form-control" placeholder="Ej. Urb. Miraflores, Castilla - Piura" required>
+                        </div>
+
+                        <!-- 2. Datos Académicos y Asignación de Prácticas -->
+                        <div class="col-12 mt-3">
+                            <span class="badge bg-primary-subtle text-primary border">2. Procedencia Académica y Asignación de Convenio en el CIT - UNP</span>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-medium">Escuela Profesional de Procedencia:</label>
+                            <select id="nuevoEscuela" class="form-select">
+                                <option value="Ingeniería Informática">Escuela Prof. de Ingeniería Informática (FII)</option>
+                                <option value="Ingeniería Industrial">Escuela Prof. de Ingeniería Industrial (FII)</option>
+                                <option value="Ingeniería Mecatrónica">Escuela Prof. de Ingeniería Mecatrónica (FII)</option>
+                                <option value="Ciencias Administrativas">Facultad de Ciencias Administrativas</option>
+                                <option value="Ingeniería Electrónica y Telecomunicaciones">Ing. Electrónica y Telecomunicaciones</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-medium">Ciclo / Condición Académica:</label>
+                            <select id="nuevoCiclo" class="form-select">
+                                <option value="9.° Ciclo">Estudiante — 9.° Ciclo</option>
+                                <option value="10.° Ciclo">Estudiante — 10.° Ciclo</option>
+                                <option value="Egresado / Bachiller">Egresado / Bachiller</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label small fw-medium">Modalidad Formativa (Ley N.° 28518):</label>
+                            <select id="nuevoModalidad" class="form-select">
+                                <option value="PREPROFESIONAL">Prácticas Preprofesionales (Máx. 6 h/día · 30 h/sem · Meta 360 h)</option>
+                                <option value="PROFESIONAL">Prácticas Profesionales (Máx. 8 h/día · 48 h/sem · Meta 480 h)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label small fw-medium">Sede / Dependencia Receptora UNP:</label>
+                            <select id="nuevoDependencia" class="form-select">
+                                <option value="CIT-UNP">CIT - Centro de Informática y Telecomunicaciones</option>
+                                <option value="FII-UNP">Facultad de Ingeniería Industrial — Centro de Cómputo</option>
+                                <option value="FCA-UNP">Facultad de Ciencias Administrativas — Unidad de Sistemas</option>
+                                <option value="FIM-UNP">Facultad de Ingeniería de Minas — Lab. Simulación</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-medium">Área Técnica Asignada:</label>
+                            <select id="nuevoArea" class="form-select">
+                                <option value="AREA-DEV">Desarrollo de Software y Sistemas Web</option>
+                                <option value="AREA-NET">Redes, Fibra Óptica y Telecomunicaciones</option>
+                                <option value="AREA-SUP">Soporte Técnico y Mantenimiento de Equipos</option>
+                                <option value="AREA-SRV">Administración de Servidores y Base de Datos</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-medium">Turno Escalonado / Jornada Asignada:</label>
+                            <select id="nuevoTurno" class="form-select">
+                                <option value="08:00 - 14:00 (Turno Mañana)">08:00 - 14:00 (Turno Mañana · 6 h)</option>
+                                <option value="14:00 - 20:00 (Turno Tarde)">14:00 - 20:00 (Turno Tarde · 6 h)</option>
+                                <option value="08:00 - 16:00 (Jornada Completa)">08:00 - 16:00 (Jornada Completa Profesional · 8 h)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-end mt-3">
+                            <button type="submit" class="btn btn-primary px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2">
+                                <i data-lucide="save" style="width:16px;height:16px;"></i>
+                                <span>Guardar Practicante y Activar Convenio</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- PADRÓN / DIRECTORIO DE PRACTICANTES CON SUS DATOS PERSONALES Y ACADÉMICOS -->
+                <div class="card-custom p-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
+                            <i data-lucide="contact-round" style="width:18px;height:18px;color:#1b4f72;"></i>
+                            <span>Directorio General de Practicantes Registrados (Datos Personales y Académicos)</span>
+                        </h6>
+                        <div style="width: 310px;">
+                            <input type="text" id="inputBuscarPracticanteDir" class="form-control form-control-sm" oninput="renderDirectorioPracticantes()" placeholder="Buscar por Código UNP, DNI o Apellidos...">
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Código UNP / DNI</th>
+                                    <th>Apellidos y Nombres</th>
+                                    <th>Escuela / Ciclo</th>
+                                    <th>Contacto Personal (Correo y WhatsApp)</th>
+                                    <th>Dirección / Residencia</th>
+                                    <th>Modalidad y Área CIT</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaDirectorioPracticantesBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =================================================================== -->
+            <!-- VISTA 7: REPORTES OFICIALES Y CONSTANCIA DE PRÁCTICAS               -->
+            <!-- =================================================================== -->
+            <section id="view-reportes" class="view-section d-none">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 no-print">
+                    <div>
+                        <h5 class="fw-bold mb-1">Reportes Consolidados y Emisión de Constancias de Prácticas</h5>
+                        <p class="text-secondary small mb-0">Liquidación automática de horas efectivas acumuladas, indicadores de gestión y certificados de cumplimiento.</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button id="btnExportarConsolidadoGlobal" class="btn btn-sm btn-success fw-medium d-inline-flex align-items-center gap-2" onclick="exportarReporteCsv()">
+                            <i data-lucide="download" style="width:15px;height:15px;"></i>
+                            <span>Exportar Consolidado CSV / Excel</span>
+                        </button>
+                        <button class="btn btn-sm btn-primary fw-medium d-inline-flex align-items-center gap-2" onclick="window.print()">
+                            <i data-lucide="printer" style="width:15px;height:15px;"></i>
+                            <span>Imprimir / Guardar Constancia PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tabla de Indicadores de Gestión Operativa -->
+                <div id="cardIndicadoresGerenciales" class="card-custom p-4 mb-4 no-print">
+                    <h6 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                        <i data-lucide="table-2" style="width:17px;height:17px;color:#1b4f72;"></i>
+                        <span>Indicadores de Desempeño Operativo del Control de Prácticas (CIT - UNP)</span>
+                    </h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Fuente Documental</th>
+                                    <th>Indicador de Control</th>
+                                    <th class="text-center">Evaluación</th>
+                                    <th class="text-center">Registro Tradicional</th>
+                                    <th class="text-center">Plataforma SICA-CIT</th>
+                                    <th class="text-center">Variación</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaAnexo05Body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Generador de Informe / Constancia Oficial de Prácticas -->
+                <div class="card-custom p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3 no-print">
+                        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
+                            <i data-lucide="file-badge" style="width:17px;height:17px;color:#9a7b2c;"></i>
+                            <span>Vista Previa Oficial: Informe de Cumplimiento y Constancia de Prácticas – CIT UNP</span>
+                        </h6>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="small fw-medium text-secondary">Practicante:</span>
+                            <select id="selectPracticanteConstancia" class="form-select form-select-sm" style="width: 310px;" onchange="actualizarVistaPreviaConstancia(this.value)"></select>
+                        </div>
+                    </div>
+
+                    <div class="constancia-sheet">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <img src="assets/logo_unp.png" alt="Escudo UNP" class="constancia-logo">
+                            <div class="text-center flex-grow-1 px-3">
+                                <h5 class="fw-bold mb-0" style="color: #0f2338;">UNIVERSIDAD NACIONAL DE PIURA</h5>
+                                <div class="fw-bold" style="color: #7b2431; font-size: 0.92rem;">FACULTAD DE INGENIERÍA INDUSTRIAL — ESCUELA PROFESIONAL DE INGENIERÍA INFORMÁTICA</div>
+                                <div class="fw-semibold small text-dark">CENTRO DE INFORMÁTICA Y TELECOMUNICACIONES (CIT - UNP)</div>
+                            </div>
+                            <img src="assets/logo_fii_unp.png" alt="Escudo FII UNP" class="constancia-logo">
+                        </div>
+                        <hr class="my-3">
+                        <div class="text-center mb-4">
+                            <h5 class="fw-bold text-decoration-underline">INFORME DE CUMPLIMIENTO Y CONSTANCIA DE PRÁCTICAS</h5>
+                        </div>
+
+                        <p style="text-align: justify; line-height: 1.7;">
+                            La Jefatura del <strong>Centro de Informática y Telecomunicaciones de la Universidad Nacional de Piura (CIT - UNP)</strong> deja constancia por medio del presente documento que el(la) estudiante/egresado(a)
+                            <strong id="constNombrePracticante">ARNOLD JONATAN ALVARADO GIRÓN</strong>, <span id="constDniCodigo"></span>, perteneciente a la <strong>Escuela Profesional de Ingeniería Informática</strong>, ha desarrollado sus
+                            <strong id="constModalidad">PRÁCTICAS PROFESIONALES</strong> en el área técnica de <strong id="constArea">Desarrollo de Software y Sistemas Web</strong>, bajo la supervisión directa de <strong id="constSupervisor"></strong>.
+                        </p>
+
+                        <p style="text-align: justify; line-height: 1.7;">
+                            De acuerdo con los registros verificados en el <em>Sistema de Control de Asistencia y Seguimiento de Prácticas del CIT - UNP</em>, el(la) practicante registra un cómputo validado de:
+                            <br><strong id="constHoras"></strong>.
+                            <br><span id="constMetricas" class="fw-bold"></span>.
+                        </p>
+
+                        <div class="mt-3 mb-4">
+                            <div class="fw-bold mb-2">Resumen de Actividades Técnicas Realizadas y Validadas por el Supervisor:</div>
+                            <ul id="constListaActividades" style="line-height: 1.6;"></ul>
+                        </div>
+
+                        <p class="mt-4">Se expide el presente documento en el campus universitario de Castilla, Piura, a los 16 días del mes de noviembre de 2026, para los fines académicos y administrativos correspondientes.</p>
+
+                        <div class="row mt-5 pt-4 text-center">
+                            <div class="col-6">
+                                <div>_______________________________________</div>
+                                <div class="fw-bold small">Supervisor de Área Técnica – CIT UNP</div>
+                            </div>
+                            <div class="col-6">
+                                <div>_______________________________________</div>
+                                <div class="fw-bold small">Jefatura del Centro de Informática y Telecomunicaciones</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    </div> <!-- Fin de #appAuthenticatedContainer -->
+
+    <!-- MODAL PARA EVALUAR Y CALIFICAR ACTIVIDAD REALIZADA -->
+    <div class="modal fade" id="modalEvaluarActividad" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header text-white" style="background-color: #0f2338;">
+                    <h6 class="modal-title fw-semibold d-flex align-items-center gap-2">
+                        <i data-lucide="award" style="width:17px;height:17px;color:#c8a95b;"></i>
+                        <span>Calificación y Conformidad de Actividad Técnica</span>
+                    </h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-1 small text-secondary">Practicante y Unidad Operativa:</div>
+                    <div id="evalModalPracticante" class="fw-bold text-dark mb-3"></div>
+
+                    <div class="p-3 bg-light rounded border mb-3 small">
+                        <div class="fw-semibold text-dark mb-1">Actividad documentada en el turno:</div>
+                        <div id="evalModalDescripcion" class="mb-2"></div>
+                        <div class="text-secondary"><strong>Entregable:</strong> <span id="evalModalEntregable"></span></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">1. Calificación de Desempeño Técnico:</label>
+                        <div id="evalModalStarsContainer" class="d-flex align-items-center"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">2. Dictamen de Revisión del Supervisor:</label>
+                        <select id="evalModalEstadoSelect" class="form-select">
+                            <option value="APROBADA">APROBADA — Otorga conformidad y valida las horas del turno</option>
+                            <option value="OBSERVADA">OBSERVADA — Solicita subsanación al practicante vía WhatsApp/Correo</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label fw-semibold small">3. Observación o Retroalimentación Técnica:</label>
+                        <textarea id="evalModalObservacion" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary btn-sm fw-semibold" onclick="guardarEvaluacionActividad()">
+                        Guardar Calificación
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE EXPEDIENTE, SEGUIMIENTO Y DESPACHO DE NOTIFICACIÓN (BOTÓN "VER DETALLE") -->
+    <div class="modal fade" id="modalDetalleAlerta" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header text-white" style="background-color: #0f2338;">
+                    <h6 class="modal-title fw-semibold d-flex align-items-center gap-2">
+                        <i data-lucide="bell-ring" style="width:17px;height:17px;color:#c8a95b;"></i>
+                        <span>Detalle y Gestión de Notificación Institucional (<span id="detAlertaCodigo">ALR-901</span>)</span>
+                    </h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded border h-100 small">
+                                <div class="text-secondary fw-semibold text-uppercase mb-1" style="font-size:0.7rem;">Datos del Evento y Practicante</div>
+                                <div class="mb-1"><strong>Categoría:</strong> <span id="detAlertaTipo" class="badge bg-primary-subtle text-primary border"></span></div>
+                                <div class="mb-1"><strong>Practicante:</strong> <span id="detAlertaPracticante" class="fw-semibold text-dark"></span></div>
+                                <div class="mb-1"><strong>Unidad Operativa:</strong> <span id="detAlertaArea"></span></div>
+                                <div><strong>Fecha y Hora de Emisión:</strong> <span id="detAlertaFechaHora" class="tabular-nums"></span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded border h-100 small">
+                                <div class="text-secondary fw-semibold text-uppercase mb-1" style="font-size:0.7rem;">Trazabilidad de Envío Multicanal</div>
+                                <div class="mb-1"><strong>Destinatario:</strong> <span id="detAlertaDestinatario" class="fw-medium text-dark"></span></div>
+                                <div class="mb-1"><strong>Canales Despachados:</strong> <span id="detAlertaCanal" class="badge bg-success-subtle text-success border"></span></div>
+                                <div class="mb-1"><strong>Estado Actual:</strong> <span id="detAlertaEstadoBadge"></span></div>
+                                <div><strong>Hora de Confirmación:</strong> <span id="detAlertaHoraAtencion" class="tabular-nums fw-semibold"></span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">Contenido Enviado vía WhatsApp:</label>
+                            <div class="whatsapp-preview-box p-2">
+                                <div id="detAlertaMensajeWa" class="whatsapp-bubble small"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">Asunto y Registro de Correo Institucional:</label>
+                            <div class="p-3 bg-light rounded border small h-100">
+                                <div class="mb-2"><strong>Asunto:</strong> <span id="detAlertaAsuntoCorreo"></span></div>
+                                <div class="text-secondary" style="font-size:0.78rem;">Servidor de salida: <span class="font-monospace">smtp.unp.edu.pe (TLS 587)</span></div>
+                                <div class="text-secondary mt-1" style="font-size:0.78rem;">Remitente oficial: <span class="font-monospace">notificaciones.cit@unp.edu.pe</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="detAlertaSeccionResolucion" class="border-top pt-3">
+                        <label class="form-label small fw-semibold">Acción o Resolución Tomada por el Supervisor de Área:</label>
+                        <textarea id="detAlertaInputResolucion" class="form-control mb-2" rows="2" placeholder="Ej. Se coordinó con el practicante la reprogramación y recuperación de los minutos de retraso en la sesión del sábado..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light d-flex justify-content-between flex-wrap gap-2">
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-success btn-sm fw-medium d-inline-flex align-items-center gap-1" onclick="despacharWhatsappDirectoModal()">
+                            <i data-lucide="send" style="width:14px;height:14px;"></i>
+                            <span>Abrir / Reenviar en WhatsApp</span>
+                        </button>
+                        <button type="button" class="btn btn-outline-primary btn-sm fw-medium d-inline-flex align-items-center gap-1" onclick="reenviarCorreoInstitucionalModal()">
+                            <i data-lucide="mail" style="width:14px;height:14px;"></i>
+                            <span>Reenviar Correo SMTP</span>
+                        </button>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" id="btnGuardarSeguimientoAlerta" class="btn btn-primary btn-sm fw-semibold" onclick="guardarSeguimientoAlertaModal()">
+                            Confirmar Atención y Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICACIÓN FLOTANTE INSTITUCIONAL UNP (Sin diálogos nativos del navegador) -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+        <div id="liveSystemToast" class="toast toast-unp-card toast-type-primary" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex align-items-center justify-content-between px-3 pt-2 pb-1 border-bottom bg-light">
+                <div class="d-flex align-items-center">
+                    <span id="liveToastIcon" class="text-primary me-2 d-inline-flex align-items-center"></span>
+                    <strong id="liveToastTitle" class="text-dark small fw-bold">Notificación del Sistema</strong>
+                </div>
+                <button type="button" class="btn-close" style="font-size: 0.65rem;" data-bs-dismiss="toast"></button>
+            </div>
+            <div id="liveToastBody" class="toast-body small text-secondary py-2 px-3"></div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS + Datos + Controlador -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/mockDataCitUnp.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

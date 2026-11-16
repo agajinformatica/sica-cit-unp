@@ -11,5 +11,8 @@
     "node": ">=18.0.0"
   },
   "author": "Bach. Arnold Jonatan Alvarado Girón <agaj.informatica@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "pg": "^8.23.1"
+  }
 }

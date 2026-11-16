@@ -168,6 +168,7 @@
     };
 
     window.cerrarSesionInstitucional = function () {
+        toggleMobileSidebar(false);
         document.getElementById("appAuthenticatedContainer").classList.add("d-none");
         document.getElementById("authLoginScreen").classList.remove("d-none");
         document.getElementById("loginInputPassword").value = "";
@@ -175,6 +176,18 @@
         if (window.lucide && typeof window.lucide.createIcons === "function") {
             window.lucide.createIcons({ attrs: { "stroke-width": 1.65 } });
         }
+    };
+
+    // Control del Menú Lateral Responsivo (Celulares y Tablets)
+    window.toggleMobileSidebar = function (forceState) {
+        const sidebar = document.getElementById("sidebarUnp");
+        const backdrop = document.getElementById("sidebarMobileBackdrop");
+        if (!sidebar || !backdrop) return;
+        const shouldOpen = typeof forceState === "boolean"
+            ? forceState
+            : !sidebar.classList.contains("sidebar-open");
+        sidebar.classList.toggle("sidebar-open", shouldOpen);
+        backdrop.classList.toggle("active", shouldOpen);
     };
 
     function startClock() {
@@ -279,6 +292,7 @@
         document.querySelectorAll(".nav-unp .nav-link").forEach(link => {
             link.classList.toggle("active", link.getAttribute("data-view") === viewName);
         });
+        toggleMobileSidebar(false);
         renderAll();
     };
 
@@ -1265,6 +1279,33 @@
         }
     }
 
+    async function hydrateFromBackendPostgres() {
+        if (!window.location.protocol.startsWith("http")) return;
+        try {
+            const res = await fetch("/api/v1/estado");
+            if (!res.ok) return;
+            const json = await res.json();
+            if (json && json.ok && json.data) {
+                if (Array.isArray(json.data.practicantes) && json.data.practicantes.length > 0) {
+                    window.CIT_UNP_DATA.practicantes = json.data.practicantes;
+                }
+                if (Array.isArray(json.data.actividades)) {
+                    window.CIT_UNP_DATA.actividades = json.data.actividades;
+                }
+                if (Array.isArray(json.data.alertas)) {
+                    window.CIT_UNP_DATA.alertas = json.data.alertas;
+                }
+                if (Array.isArray(json.data.dependencias) && json.data.dependencias.length > 0) {
+                    window.CIT_UNP_DATA.dependencias = json.data.dependencias;
+                }
+                if (Array.isArray(json.data.areasCit) && json.data.areasCit.length > 0) {
+                    window.CIT_UNP_DATA.areasCit = json.data.areasCit;
+                }
+                renderAll();
+            }
+        } catch (_) {}
+    }
+
     async function syncBackendAction(endpoint, payload) {
         if (window.location.protocol.startsWith("http")) {
             try {
@@ -1283,5 +1324,6 @@
     document.addEventListener("DOMContentLoaded", function () {
         startClock();
         renderAll();
+        hydrateFromBackendPostgres();
     });
 })();

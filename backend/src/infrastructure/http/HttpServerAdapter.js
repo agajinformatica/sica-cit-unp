@@ -68,13 +68,14 @@ class HttpServerAdapter {
             const pathname = urlObj.pathname;
 
             try {
-                // 1. Healthcheck de la Arquitectura Hexagonal
+                // 1. Healthcheck de la Arquitectura Hexagonal y Motor PostgreSQL
                 if (req.method === "GET" && pathname === "/api/v1/health") {
                     return this._sendJson(res, 200, {
                         status: "OK",
                         sistema: "SICA - CIT UNP (Sistema Inteligente de Control de Asistencia y Evaluación de Prácticas)",
                         arquitectura: "Hexagonal (Ports & Adapters)",
-                        patronesActivos: ["Strategy (Ley 28518: 30h/48h)", "Repository", "Adapter", "Composite Notification", "RBAC Auth"],
+                        motorBaseDatos: process.env.DATABASE_URL ? "PostgreSQL (Conectado)" : "Persistencia Local JSON",
+                        patronesActivos: ["Strategy (Ley 28518: 30h/48h)", "Repository (PostgreSQL)", "Adapter", "Composite Notification", "RBAC Auth"],
                         horaServidorOficial: new Date().toISOString()
                     });
                 }
@@ -133,7 +134,7 @@ class HttpServerAdapter {
                 if (req.method === "POST" && pathname === "/api/v1/alertas/atender") {
                     this._enforceRbac(req, ["ADMIN_CIT", "SUPERVISOR"]);
                     const body = await this._parseBody(req);
-                    const resultado = await this.useCases.atenderAlertaUseCase.execute(body.alertaId);
+                    const resultado = await this.useCases.atenderAlertaUseCase.execute(body.alertaId, body.resolucion);
                     return this._sendJson(res, 200, { ok: true, resultado });
                 }
 

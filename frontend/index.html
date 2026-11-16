@@ -110,14 +110,20 @@
     <!-- CONTENEDOR DE LA APLICACIÓN AUTENTICADA -->
     <div id="appAuthenticatedContainer" class="d-none">
 
+    <!-- BACKDROP MÓVIL / TABLET PARA SIDEBAR OFF-CANVAS -->
+    <div id="sidebarMobileBackdrop" class="sidebar-mobile-backdrop" onclick="toggleMobileSidebar(false)"></div>
+
     <!-- SIDEBAR INSTITUCIONAL UNP -->
-    <aside class="sidebar-unp">
+    <aside id="sidebarUnp" class="sidebar-unp">
         <div class="sidebar-brand d-flex align-items-center gap-3">
             <img src="assets/logo_unp.png" alt="Escudo Oficial UNP" class="unp-shield-sidebar">
-            <div>
+            <div class="flex-grow-1">
                 <div class="fw-bold text-white" style="font-size: 0.88rem; letter-spacing: 0.2px;">UNIVERSIDAD NACIONAL DE PIURA</div>
                 <div class="text-white-50" style="font-size: 0.72rem;">CIT - UNP · Ing. Informática</div>
             </div>
+            <button type="button" class="btn btn-sm text-white-50 d-lg-none ms-auto p-1" onclick="toggleMobileSidebar(false)" aria-label="Cerrar menú">
+                <i data-lucide="x" style="width:20px;height:20px;"></i>
+            </button>
         </div>
 
         <div class="px-3 pt-3 pb-1">
@@ -168,12 +174,15 @@
     <div class="main-wrapper">
 
         <!-- TOPBAR INSTITUCIONAL -->
-        <header class="topbar-unp d-flex flex-wrap justify-content-between align-items-center gap-3">
-            <div class="d-flex align-items-center gap-2 flex-wrap">
+        <header class="topbar-unp d-flex flex-wrap justify-content-between align-items-center gap-2 gap-md-3">
+            <div class="d-flex align-items-center gap-2 flex-wrap flex-grow-1">
+                <button type="button" id="btnToggleSidebarMobile" class="btn btn-sm btn-outline-primary d-lg-none px-2 py-1" onclick="toggleMobileSidebar()" aria-label="Abrir menú de navegación">
+                    <i data-lucide="menu" style="width:18px;height:18px;"></i>
+                </button>
                 <img src="assets/logo_fii_unp.png" alt="Logo FII UNP" class="unp-fii-topbar me-1" title="Facultad de Ingeniería Industrial - Escuela Profesional de Ingeniería Informática">
                 <div id="topbarDependenciaWrapper" class="d-inline-flex align-items-center gap-2">
-                    <span class="fw-semibold text-secondary small">Dependencia:</span>
-                    <select class="form-select form-select-sm fw-medium" style="width: 315px;" onchange="handleDependenciaFilter(this.value)">
+                    <span class="fw-semibold text-secondary small d-none d-sm-inline">Dependencia:</span>
+                    <select class="form-select form-select-sm fw-medium responsive-select-topbar" onchange="handleDependenciaFilter(this.value)">
                         <option value="TODAS">Todas las Dependencias Registradas</option>
                         <option value="CIT-UNP">CIT - Centro de Informática y Telecomunicaciones</option>
                         <option value="FII-UNP">Facultad de Ingeniería Industrial — Centro de Cómputo</option>
@@ -186,7 +195,7 @@
                 </span>
             </div>
 
-            <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center gap-2 gap-md-3 ms-auto">
                 <button class="btn btn-sm btn-outline-primary position-relative px-2" onclick="switchView('alertas')" title="Notificaciones Pendientes">
                     <i data-lucide="bell" style="width:16px;height:16px;"></i>
                     <span id="topAlertCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.65rem;">1</span>
@@ -199,7 +208,7 @@
 
                 <button type="button" class="btn btn-sm btn-outline-danger fw-medium d-inline-flex align-items-center gap-1" onclick="cerrarSesionInstitucional()" title="Cerrar Sesión">
                     <i data-lucide="log-out" style="width:14px;height:14px;"></i>
-                    <span>Cerrar Sesión</span>
+                    <span class="d-none d-sm-inline">Cerrar Sesión</span>
                 </button>
             </div>
         </header>
@@ -211,12 +220,12 @@
             <!-- VISTA 1: PANEL PRINCIPAL CIT - UNP                                  -->
             <!-- =================================================================== -->
             <section id="view-dashboard" class="view-section">
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
                     <div>
                         <h5 class="fw-bold mb-1">Panel de Gestión de Prácticas Preprofesionales y Profesionales</h5>
                         <p class="text-secondary small mb-0">Supervisión en tiempo real de asistencia por turnos, validación de actividades técnicas y notificaciones institucionales.</p>
                     </div>
-                    <div class="d-flex gap-2">
+                    <div class="d-flex flex-wrap gap-2">
                         <button id="btnDashboardNuevoPracticante" class="btn btn-sm btn-primary fw-medium d-inline-flex align-items-center gap-2" onclick="switchView('convenios')">
                             <i data-lucide="user-plus" style="width:15px;height:15px;"></i>
                             <span>Agregar Practicante</span>
@@ -724,7 +733,7 @@
                             <i data-lucide="contact-round" style="width:18px;height:18px;color:#1b4f72;"></i>
                             <span>Directorio General de Practicantes Registrados (Datos Personales y Académicos)</span>
                         </h6>
-                        <div style="width: 310px;">
+                        <div class="responsive-search-dir">
                             <input type="text" id="inputBuscarPracticanteDir" class="form-control form-control-sm" oninput="renderDirectorioPracticantes()" placeholder="Buscar por Código UNP, DNI o Apellidos...">
                         </div>
                     </div>
@@ -792,26 +801,26 @@
 
                 <!-- Generador de Informe / Constancia Oficial de Prácticas -->
                 <div class="card-custom p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3 no-print">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 no-print">
                         <h6 class="fw-bold mb-0 d-flex align-items-center gap-2">
                             <i data-lucide="file-badge" style="width:17px;height:17px;color:#9a7b2c;"></i>
                             <span>Vista Previa Oficial: Informe de Cumplimiento y Constancia de Prácticas – CIT UNP</span>
                         </h6>
-                        <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex flex-wrap align-items-center gap-2">
                             <span class="small fw-medium text-secondary">Practicante:</span>
-                            <select id="selectPracticanteConstancia" class="form-select form-select-sm" style="width: 310px;" onchange="actualizarVistaPreviaConstancia(this.value)"></select>
+                            <select id="selectPracticanteConstancia" class="form-select form-select-sm responsive-search-dir" onchange="actualizarVistaPreviaConstancia(this.value)"></select>
                         </div>
                     </div>
 
                     <div class="constancia-sheet">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 mb-3">
                             <img src="assets/logo_unp.png" alt="Escudo UNP" class="constancia-logo">
-                            <div class="text-center flex-grow-1 px-3">
+                            <div class="text-center flex-grow-1 px-2 px-sm-3">
                                 <h5 class="fw-bold mb-0" style="color: #0f2338;">UNIVERSIDAD NACIONAL DE PIURA</h5>
                                 <div class="fw-bold" style="color: #7b2431; font-size: 0.92rem;">FACULTAD DE INGENIERÍA INDUSTRIAL — ESCUELA PROFESIONAL DE INGENIERÍA INFORMÁTICA</div>
                                 <div class="fw-semibold small text-dark">CENTRO DE INFORMÁTICA Y TELECOMUNICACIONES (CIT - UNP)</div>
                             </div>
-                            <img src="assets/logo_fii_unp.png" alt="Escudo FII UNP" class="constancia-logo">
+                            <img src="assets/logo_fii_unp.png" alt="Escudo FII UNP" class="constancia-logo d-none d-sm-block">
                         </div>
                         <hr class="my-3">
                         <div class="text-center mb-4">
@@ -837,13 +846,13 @@
 
                         <p class="mt-4">Se expide el presente documento en el campus universitario de Castilla, Piura, a los 16 días del mes de noviembre de 2026, para los fines académicos y administrativos correspondientes.</p>
 
-                        <div class="row mt-5 pt-4 text-center">
-                            <div class="col-6">
-                                <div>_______________________________________</div>
+                        <div class="row g-4 mt-4 pt-3 text-center">
+                            <div class="col-12 col-sm-6">
+                                <div>_______________________________</div>
                                 <div class="fw-bold small">Supervisor de Área Técnica – CIT UNP</div>
                             </div>
-                            <div class="col-6">
-                                <div>_______________________________________</div>
+                            <div class="col-12 col-sm-6">
+                                <div>_______________________________</div>
                                 <div class="fw-bold small">Jefatura del Centro de Informática y Telecomunicaciones</div>
                             </div>
                         </div>

@@ -3,9 +3,9 @@ const { PredictorAusentismoService } = require("../../domain/services/PredictorA
 
 /**
  * CASOS DE USO (Application Layer):
- * - PredecirAusentismoUseCase (CU-07: Evaluación predictiva y alerta preventiva)
- * - RegistrarConvenioUseCase (CU-08 / CU-09: Alta multifacultad con Strategy Pattern)
- * - AtenderAlertaUseCase (CU-06: Registro de atención para indicador Anexo 05)
+ * - PredecirAusentismoUseCase (Evaluación predictiva y alerta preventiva)
+ * - RegistrarConvenioUseCase (Alta de practicante y convenio con Strategy Pattern)
+ * - AtenderAlertaUseCase (Confirmación y seguimiento de alerta por el supervisor)
  */
 
 class PredecirAusentismoUseCase {
@@ -27,13 +27,13 @@ class PredecirAusentismoUseCase {
         await this.asistenciaRepository.actualizarPracticante(practicante);
 
         const payloadAlerta = {
-            tipo: "RIESGO_PREDICTIVO",
+            tipo: "ALERTA PREVENTIVA DE AUSENTISMO",
             practicante: practicante.nombres,
             area: practicante.areaNombre,
             canal: "WHATSAPP + CORREO",
             destinatario: `${practicante.supervisor} / ${practicante.nombres}`,
-            mensajeWhatsapp: `*[CIT-UNP · ALERTA PREDICTIVA DE AUSENTISMO]*\nEl modelo predictivo estimó un *Score de Riesgo de ${resultadoIA.scoreRiesgoAusentismo}% (${resultadoIA.nivelSemaforo})* para *${practicante.nombres}*.\nFactor: _${practicante.factorPredictivo}_\nFecha término proyectada: *${resultadoIA.fechaFinProyectada}*.`,
-            asuntoCorreo: `[CIT-UNP PREVENTIVO] Alerta Predictiva de Ausentismo (${resultadoIA.scoreRiesgoAusentismo}%) - ${practicante.nombres}`
+            mensajeWhatsapp: `*[CIT-UNP · AVISO PREVENTIVO DE SEGUIMIENTO HORARIO]*\nEl análisis de asistencia estima un *índice de riesgo de ausentismo de ${resultadoIA.scoreRiesgoAusentismo}% (${resultadoIA.nivelSemaforo})* para *${practicante.nombres}*.\nFactor observado: _${practicante.factorPredictivo}_\nFecha estimada de culminación: *${resultadoIA.fechaFinProyectada}*.`,
+            asuntoCorreo: `[CIT-UNP] Aviso Preventivo de Seguimiento Horario (${resultadoIA.scoreRiesgoAusentismo}%) — ${practicante.nombres}`
         };
 
         const alerta = await this.notificationPort.enviarAlertaMulticanal(payloadAlerta);
@@ -51,10 +51,14 @@ class RegistrarConvenioUseCase {
     async execute(datos) {
         const strategy = ModalidadStrategyFactory.obtenerEstrategia(datos.modalidad);
         const nuevo = await this.asistenciaRepository.crearPracticante({
+            id: datos.id,
             codigoUnp: datos.codigoUnp || "0512023010",
             dni: datos.dni,
             nombres: datos.nombres,
+            facultadOrigen: datos.facultadOrigen || "Facultad de Ingeniería Industrial",
             escuela: datos.escuela || "Ingeniería Informática",
+            cicloCondicion: datos.cicloCondicion || "10.° Ciclo",
+            direccionDistrito: datos.direccionDistrito || "Castilla, Piura",
             dependenciaId: datos.dependenciaId || "CIT-UNP",
             areaId: datos.areaId || "AREA-DEV",
             areaNombre: datos.areaNombre || "Desarrollo de Software y Sistemas Web",
@@ -65,11 +69,11 @@ class RegistrarConvenioUseCase {
             horasSemanaActual: 0,
             metaHoras: strategy.metaHorasDefecto,
             horasAcumuladas: 0,
-            turnoHoy: datos.turnoHoy || "08:00 - 14:00 (Escalonado Mañana)",
+            turnoHoy: datos.turnoHoy || "08:00 - 14:00 (Turno Mañana)",
             horaInicioTurno: String(datos.turnoHoy || "08:00").slice(0, 5),
             toleranciaMin: 10,
             estadoHoy: "PUNTUAL",
-            horaEntradaHoy: "Recién inscrito",
+            horaEntradaHoy: "Sin marcación hoy",
             horaSalidaHoy: "--:--",
             indicePuntualidad: 100.0,
             tardanzasMes: 0,
@@ -77,9 +81,9 @@ class RegistrarConvenioUseCase {
             scoreRiesgoAusentismo: 5,
             nivelSemaforo: "VERDE",
             factorPredictivo: `Convenio activo dentro del límite semanal de ${strategy.topeHorasSemanales} horas`,
-            fechaInicio: "2026-11-16",
-            fechaFinProgramada: "2027-03-16",
-            fechaFinProyectada: "2027-03-16",
+            fechaInicio: datos.fechaInicio || "2026-11-16",
+            fechaFinProgramada: datos.fechaFinProgramada || "2027-03-16",
+            fechaFinProyectada: datos.fechaFinProyectada || "2027-03-16",
             telefonoWhatsapp: datos.telefonoWhatsapp || "+51 968 000 111",
             correo: datos.correo || "practicante@alumnos.unp.edu.pe",
             promedioEvaluacionActividades: 5.0
@@ -93,9 +97,9 @@ class AtenderAlertaUseCase {
         this.asistenciaRepository = asistenciaRepository;
     }
 
-    async execute(alertaId) {
+    async execute(alertaId, resolucionSupervisor = null) {
         const horaAtencion = new Date().toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit", hour12: false });
-        return await this.asistenciaRepository.marcarAlertaAtendida(alertaId, horaAtencion);
+        return await this.asistenciaRepository.marcarAlertaAtendida(alertaId, horaAtencion, resolucionSupervisor);
     }
 }
 

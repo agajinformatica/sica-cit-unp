@@ -445,6 +445,152 @@ h1, h2, h3, h4, h5, h6 {
     border-color: var(--unp-blue-primary);
 }
 
+/* Utilidades Responsivas para Selectores y Buscadores */
+.responsive-select-topbar {
+    width: 315px;
+    max-width: 100%;
+}
+
+.responsive-search-dir {
+    width: 310px;
+    max-width: 100%;
+}
+
+/* Backdrop para Menú Lateral Móvil y Tablet */
+.sidebar-mobile-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 35, 56, 0.55);
+    backdrop-filter: blur(2px);
+    z-index: 1035;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.sidebar-mobile-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ========================================================================= */
+/* DISEÑO RESPONSIVO PARA TABLETS (< 992px) Y CELULARES (< 768px)            */
+/* ========================================================================= */
+@media (max-width: 991.98px) {
+    .sidebar-unp {
+        width: 280px;
+        max-width: 84vw;
+        z-index: 1040;
+        transform: translateX(-100%);
+        transition: transform 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar-unp.sidebar-open {
+        transform: translateX(0);
+        box-shadow: 0 18px 42px rgba(8, 20, 34, 0.48);
+    }
+
+    .main-wrapper {
+        margin-left: 0 !important;
+        width: 100%;
+    }
+
+    .topbar-unp {
+        padding: 0.6rem 1rem;
+    }
+
+    .responsive-select-topbar {
+        width: 240px;
+    }
+
+    .auth-left-panel {
+        padding: 1.75rem 1.5rem;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .auth-screen-wrapper {
+        padding: 0.75rem;
+        align-items: flex-start;
+    }
+
+    .auth-left-panel {
+        padding: 1.35rem 1.2rem;
+    }
+
+    .auth-shield-logo {
+        width: 56px;
+        height: 56px;
+    }
+
+    .credential-pill-btn {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0.35rem;
+    }
+
+    #topbarDependenciaWrapper {
+        width: 100%;
+        order: 3;
+    }
+
+    .responsive-select-topbar,
+    .responsive-search-dir {
+        width: 100% !important;
+    }
+
+    .role-pill-unp {
+        font-size: 0.72rem;
+        padding: 0.28rem 0.6rem;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .server-clock {
+        font-size: 0.71rem;
+        padding: 0.28rem 0.55rem;
+    }
+
+    main.container-fluid {
+        padding: 1rem !important;
+    }
+
+    .card-custom.p-4 {
+        padding: 1.1rem !important;
+    }
+
+    .constancia-sheet {
+        padding: 1.2rem 1rem;
+        outline-offset: -5px;
+    }
+
+    .constancia-logo {
+        width: 52px;
+        height: 52px;
+    }
+
+    .toast-container {
+        left: 0.5rem;
+        right: 0.5rem;
+        bottom: 0.5rem;
+        padding: 0 !important;
+    }
+
+    .toast-unp-card {
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .table-responsive {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
 @media print {
     .sidebar-unp, .topbar-unp, .no-print {
         display: none !important;

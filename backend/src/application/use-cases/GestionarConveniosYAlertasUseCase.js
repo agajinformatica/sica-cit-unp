@@ -32,8 +32,8 @@ class PredecirAusentismoUseCase {
             area: practicante.areaNombre,
             canal: "WHATSAPP + CORREO",
             destinatario: `${practicante.supervisor} / ${practicante.nombres}`,
-            mensajeWhatsapp: `*[CIT-UNP · AVISO PREVENTIVO DE SEGUIMIENTO HORARIO]*\nEl análisis de asistencia estima un *índice de riesgo de ausentismo de ${resultadoIA.scoreRiesgoAusentismo}% (${resultadoIA.nivelSemaforo})* para *${practicante.nombres}*.\nFactor observado: _${practicante.factorPredictivo}_\nFecha estimada de culminación: *${resultadoIA.fechaFinProyectada}*.`,
-            asuntoCorreo: `[CIT-UNP] Aviso Preventivo de Seguimiento Horario (${resultadoIA.scoreRiesgoAusentismo}%) — ${practicante.nombres}`
+            mensajeWhatsapp: `*[OTI-UNP · AVISO PREVENTIVO DE SEGUIMIENTO HORARIO]*\nEl análisis de asistencia estima un *índice de riesgo de ausentismo de ${resultadoIA.scoreRiesgoAusentismo}% (${resultadoIA.nivelSemaforo})* para *${practicante.nombres}*.\nFactor observado: _${practicante.factorPredictivo}_\nFecha estimada de culminación: *${resultadoIA.fechaFinProyectada}*.`,
+            asuntoCorreo: `[OTI-UNP] Aviso Preventivo de Seguimiento Horario (${resultadoIA.scoreRiesgoAusentismo}%) — ${practicante.nombres}`
         };
 
         const alerta = await this.notificationPort.enviarAlertaMulticanal(payloadAlerta);

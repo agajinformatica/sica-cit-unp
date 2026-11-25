@@ -25,7 +25,7 @@ class RegistrarMarcacionUseCase {
 
         const practicante = await this.asistenciaRepository.obtenerPracticantePorId(practicanteId);
         if (!practicante) {
-            throw new Error(`Practicante con ID ${practicanteId} no encontrado en el CIT - UNP.`);
+            throw new Error(`Practicante con ID ${practicanteId} no encontrado en el OTI - UNP.`);
         }
 
         const strategy = ModalidadStrategyFactory.obtenerEstrategia(practicante.modalidad);
@@ -50,8 +50,8 @@ class RegistrarMarcacionUseCase {
                     area: practicante.areaNombre,
                     canal: "WHATSAPP + CORREO",
                     destinatario: `${practicante.supervisor} (${practicante.telefonoWhatsapp})`,
-                    mensajeWhatsapp: `*[CIT-UNP · ALERTA DE TARDANZA]*\nEl practicante *${practicante.nombres}* (${practicante.modalidad}) registró su entrada a las *${horaMarcacion}* (Turno: ${practicante.horaInicioTurno}, Retraso: *${clasificacion.minutosTardanza} min*).\nUnidad: ${practicante.areaNombre}.`,
-                    asuntoCorreo: `[CIT-UNP] Alerta Automática de Tardanza (${clasificacion.minutosTardanza} min) - ${practicante.nombres}`
+                    mensajeWhatsapp: `*[OTI-UNP · ALERTA DE TARDANZA]*\nEl practicante *${practicante.nombres}* (${practicante.modalidad}) registró su entrada a las *${horaMarcacion}* (Turno: ${practicante.horaInicioTurno}, Retraso: *${clasificacion.minutosTardanza} min*).\nUnidad: ${practicante.areaNombre}.`,
+                    asuntoCorreo: `[OTI-UNP] Alerta Automática de Tardanza (${clasificacion.minutosTardanza} min) - ${practicante.nombres}`
                 };
                 alertaGenerada = await this.notificationPort.enviarAlertaMulticanal(payloadAlerta);
                 await this.asistenciaRepository.guardarAlerta(alertaGenerada);
@@ -105,9 +105,9 @@ class RegistrarMarcacionUseCase {
                 practicante: practicante.nombres,
                 area: practicante.areaNombre,
                 canal: "WHATSAPP + CORREO",
-                destinatario: `Jefatura CIT - UNP / ${practicante.supervisor}`,
-                mensajeWhatsapp: `*[CIT-UNP · AVANCE DE HORAS ${paha.toFixed(1)}%]*\nEl practicante *${practicante.nombres}* (${practicante.modalidad}) alcanzó *${practicante.horasAcumuladas} / ${practicante.metaHoras} h*. Puede iniciar validación para su Constancia de Prácticas.`,
-                asuntoCorreo: `[CIT-UNP] Cumplimiento de Meta de Horas (${paha.toFixed(1)}%) - ${practicante.nombres}`
+                destinatario: `Jefatura OTI - UNP / ${practicante.supervisor}`,
+                mensajeWhatsapp: `*[OTI-UNP · AVANCE DE HORAS ${paha.toFixed(1)}%]*\nEl practicante *${practicante.nombres}* (${practicante.modalidad}) alcanzó *${practicante.horasAcumuladas} / ${practicante.metaHoras} h*. Puede iniciar validación para su Constancia de Prácticas.`,
+                asuntoCorreo: `[OTI-UNP] Cumplimiento de Meta de Horas (${paha.toFixed(1)}%) - ${practicante.nombres}`
             };
             alertaGenerada = await this.notificationPort.enviarAlertaMulticanal(payloadMeta);
             await this.asistenciaRepository.guardarAlerta(alertaGenerada);

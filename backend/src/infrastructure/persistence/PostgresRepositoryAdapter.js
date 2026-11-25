@@ -124,33 +124,28 @@ class PostgresRepositoryAdapter extends IAsistenciaRepositoryPort {
                     );
                 `);
 
-                // 3. Verificar si ya existen practicantes en PostgreSQL; si está vacío, poblar con INITIAL_SEED
-                const { rows: countRows } = await client.query(`SELECT COUNT(*)::int AS total FROM sica_practicante_convenio`);
-                if (countRows[0].total === 0) {
-                    // Poblar también facultad_dependencia en el esquema 3FN
-                    for (const dep of INITIAL_SEED.dependencias) {
-                        await client.query(
-                            `INSERT INTO facultad_dependencia (codigo_unp, nombre, facultad, activo)
-                             VALUES ($1, $2, $3, $4)
-                             ON CONFLICT (codigo_unp) DO NOTHING`,
-                            [dep.id, dep.nombre, dep.facultad, dep.activo]
-                        );
-                    }
+                // 3. Sincronizar registros semilla institucionales de la OTI - UNP (UNP, UCV, UTP, SENATI)
+                for (const dep of INITIAL_SEED.dependencias) {
+                    await client.query(
+                        `INSERT INTO facultad_dependencia (codigo_unp, nombre, facultad, activo)
+                         VALUES ($1, $2, $3, $4)
+                         ON CONFLICT (codigo_unp) DO UPDATE SET
+                            nombre = EXCLUDED.nombre,
+                            facultad = EXCLUDED.facultad`,
+                        [dep.id, dep.nombre, dep.facultad, dep.activo]
+                    );
+                }
 
-                    // Poblar practicantes
-                    for (const p of INITIAL_SEED.practicantes) {
-                        await this._upsertPracticanteQuery(client, p);
-                    }
+                for (const p of INITIAL_SEED.practicantes) {
+                    await this._upsertPracticanteQuery(client, p);
+                }
 
-                    // Poblar actividades
-                    for (const a of INITIAL_SEED.actividades) {
-                        await this._upsertActividadQuery(client, a);
-                    }
+                for (const a of INITIAL_SEED.actividades) {
+                    await this._upsertActividadQuery(client, a);
+                }
 
-                    // Poblar alertas
-                    for (const alr of INITIAL_SEED.alertas) {
-                        await this._upsertAlertaQuery(client, alr);
-                    }
+                for (const alr of INITIAL_SEED.alertas) {
+                    await this._upsertAlertaQuery(client, alr);
                 }
 
                 await client.query("COMMIT");
@@ -298,6 +293,10 @@ class PostgresRepositoryAdapter extends IAsistenciaRepositoryPort {
                 mensaje_whatsapp, asunto_correo, atendida, hora_atencion, resolucion_supervisor
             ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
             ON CONFLICT (id) DO UPDATE SET
+                tipo = EXCLUDED.tipo,
+                area = EXCLUDED.area,
+                mensaje_whatsapp = EXCLUDED.mensaje_whatsapp,
+                asunto_correo = EXCLUDED.asunto_correo,
                 atendida = EXCLUDED.atendida,
                 hora_atencion = EXCLUDED.hora_atencion,
                 resolucion_supervisor = EXCLUDED.resolucion_supervisor

@@ -1,6 +1,6 @@
 /**
  * CASO DE USO (Application Layer): EvaluarActividadUseCase
- * Implementa CU-13 y RF-18: El Supervisor del CIT - UNP evalúa la actividad realizada
+ * Implementa CU-13 y RF-18: El Supervisor del OTI - UNP evalúa la actividad realizada
  * por el practicante en escala de 1 a 5, otorga conformidad (APROBADA u OBSERVADA)
  * y, si es OBSERVADA, despacha una alerta automática por WhatsApp y Correo.
  */
@@ -43,8 +43,8 @@ class EvaluarActividadUseCase {
                 area: actividad.areaNombre,
                 canal: "WHATSAPP + CORREO",
                 destinatario: actividad.practicanteNombre,
-                mensajeWhatsapp: `*[CIT-UNP · ACTIVIDAD OBSERVADA]*\nTu actividad *${actividad.id}* (${actividad.categoriaTecnica}) fue marcada como *OBSERVADA* por *${actividad.supervisor}*.\nCalificación preliminar: ${actividad.calificacion}/5\nObservación: _${actividad.observacionSupervisor}_`,
-                asuntoCorreo: `[CIT-UNP] Actividad de Prácticas Observada (${actividad.id}) - Subsanación Requerida`
+                mensajeWhatsapp: `*[OTI-UNP · ACTIVIDAD OBSERVADA]*\nTu actividad *${actividad.id}* (${actividad.categoriaTecnica}) fue marcada como *OBSERVADA* por *${actividad.supervisor}*.\nCalificación preliminar: ${actividad.calificacion}/5\nObservación: _${actividad.observacionSupervisor}_`,
+                asuntoCorreo: `[OTI-UNP] Actividad de Prácticas Observada (${actividad.id}) - Subsanación Requerida`
             };
             alertaGenerada = await this.notificationPort.enviarAlertaMulticanal(payloadObs);
             await this.asistenciaRepository.guardarAlerta(alertaGenerada);

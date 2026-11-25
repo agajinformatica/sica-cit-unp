@@ -1,11 +1,11 @@
-// Controlador Principal del Frontend - SICA CIT - UNP
+// Controlador Principal del Frontend - SICA OTI - UNP
 // Implementa Control de Acceso Basado en Roles (RBAC) estricto por módulo y por acción.
 (function () {
-    // Definición de Permisos RBAC por Rol Institucional en el CIT - UNP
+    // Definición de Permisos RBAC por Rol Institucional en el OTI - UNP
     const RBAC_PERMISSIONS = {
         ADMIN_CIT: {
             usuarioNombre: "Mg. Ing. Luis Armando Saavedra Yarleque",
-            cargo: "Jefatura / Administración CIT - UNP",
+            cargo: "Jefatura / Administración OTI - UNP",
             practicanteIdAsociado: null,
             areaAsignadaId: "TODAS",
             vistasPermitidas: ["dashboard", "actividades", "alertas", "predictivo", "convenios", "reportes", "marcacion"],
@@ -17,7 +17,7 @@
         },
         SUPERVISOR: {
             usuarioNombre: "Ing. Carlos Alberto Mendoza Ruiz",
-            cargo: "Supervisor de Área — Desarrollo de Software CIT",
+            cargo: "Supervisor de Área — Desarrollo de Software OTI",
             practicanteIdAsociado: null,
             areaAsignadaId: "AREA-DEV",
             vistasPermitidas: ["dashboard", "actividades", "alertas", "predictivo", "reportes"],
@@ -106,29 +106,29 @@
 
         let rolAutenticado = null;
 
-        // 1. Verificar cuenta de Jefatura / Administración CIT - UNP
+        // 1. Verificar cuenta de Jefatura / Administración OTI - UNP
         if ((userRaw === "lsaavedray@unp.edu.pe" || userRaw === "02849179" || userRaw === "admin") && passRaw === "admin2026") {
             rolAutenticado = "ADMIN_CIT";
             RBAC_PERMISSIONS.ADMIN_CIT.usuarioNombre = "Mg. Ing. Luis Armando Saavedra Yarleque";
-            RBAC_PERMISSIONS.ADMIN_CIT.cargo = "Jefatura / Administración CIT - UNP";
+            RBAC_PERMISSIONS.ADMIN_CIT.cargo = "Jefatura / Administración OTI - UNP";
         }
-        // 2. Verificar cuentas de Supervisores de Área del CIT - UNP
+        // 2. Verificar cuentas de Supervisores de Área del OTI - UNP
         else if ((userRaw === "cmendozar@unp.edu.pe" || userRaw === "supervisor") && passRaw === "sup2026") {
             rolAutenticado = "SUPERVISOR";
             RBAC_PERMISSIONS.SUPERVISOR.usuarioNombre = "Ing. Carlos Alberto Mendoza Ruiz";
-            RBAC_PERMISSIONS.SUPERVISOR.cargo = "Supervisor — Desarrollo de Software CIT";
+            RBAC_PERMISSIONS.SUPERVISOR.cargo = "Supervisor — Desarrollo de Software OTI";
             RBAC_PERMISSIONS.SUPERVISOR.areaAsignadaId = "AREA-DEV";
         }
         else if (userRaw === "jpantap@unp.edu.pe" && passRaw === "sup2026") {
             rolAutenticado = "SUPERVISOR";
             RBAC_PERMISSIONS.SUPERVISOR.usuarioNombre = "Ing. Jorge Luis Panta Palacios";
-            RBAC_PERMISSIONS.SUPERVISOR.cargo = "Supervisor — Redes y Telecomunicaciones CIT";
+            RBAC_PERMISSIONS.SUPERVISOR.cargo = "Supervisor — Redes y Telecomunicaciones OTI";
             RBAC_PERMISSIONS.SUPERVISOR.areaAsignadaId = "AREA-NET";
         }
         else if (userRaw === "mzapatac@unp.edu.pe" && passRaw === "sup2026") {
             rolAutenticado = "SUPERVISOR";
             RBAC_PERMISSIONS.SUPERVISOR.usuarioNombre = "Ing. María Elena Zapata Chunga";
-            RBAC_PERMISSIONS.SUPERVISOR.cargo = "Supervisor — Soporte Técnico CIT";
+            RBAC_PERMISSIONS.SUPERVISOR.cargo = "Supervisor — Soporte Técnico OTI";
             RBAC_PERMISSIONS.SUPERVISOR.areaAsignadaId = "AREA-SUP";
         }
         // 3. Verificar cualquier Practicante registrado en el Padrón (Usuario: Código UNP, Correo o DNI | Contraseña: DNI)
@@ -303,7 +303,7 @@
         badge.className = "role-pill-unp";
 
         if (newRole === "ADMIN_CIT") {
-            badge.innerHTML = `${lucideSvg("shield", 15, 1.75)} <span>${rbac.usuarioNombre} · Jefatura CIT</span>`;
+            badge.innerHTML = `${lucideSvg("shield", 15, 1.75)} <span>${rbac.usuarioNombre} · Jefatura OTI</span>`;
         } else if (newRole === "SUPERVISOR") {
             badge.innerHTML = `${lucideSvg("user-check", 15, 1.75)} <span>${rbac.usuarioNombre} · Supervisor</span>`;
         } else {
@@ -514,8 +514,8 @@
                     area: p.areaNombre,
                     canal: "WHATSAPP + CORREO",
                     destinatario: `${p.supervisor} (${p.telefonoWhatsapp})`,
-                    mensajeWhatsapp: `*[CIT-UNP · NOTIFICACIÓN DE TARDANZA]*\nSe informa que el practicante *${p.nombres}* (Modalidad ${p.modalidad}) registró su ingreso a las *${simHora} h* (Inicio de turno: ${p.horaInicioTurno} h · Retraso: *${retraso} minutos*).\nÁrea asignada: ${p.areaNombre}.`,
-                    asuntoCorreo: `[CIT-UNP] Registro de Tardanza (${retraso} min) — ${p.nombres}`,
+                    mensajeWhatsapp: `*[OTI-UNP · NOTIFICACIÓN DE TARDANZA]*\nSe informa que el practicante *${p.nombres}* (Modalidad ${p.modalidad}) registró su ingreso a las *${simHora} h* (Inicio de turno: ${p.horaInicioTurno} h · Retraso: *${retraso} minutos*).\nÁrea asignada: ${p.areaNombre}.`,
+                    asuntoCorreo: `[OTI-UNP] Registro de Tardanza (${retraso} min) — ${p.nombres}`,
                     atendida: false,
                     horaAtencion: "-"
                 };
@@ -573,7 +573,7 @@
             areaNombre: p.areaNombre,
             categoriaTecnica: catActividad,
             descripcion: descActividad,
-            entregable: entregableActividad || "Actividad documentada al cierre de turno en el CIT - UNP",
+            entregable: entregableActividad || "Actividad documentada al cierre de turno en el OTI - UNP",
             horasSesion: horasValidas,
             estadoRevision: "PENDIENTE_REVISION",
             calificacion: 0,
@@ -714,7 +714,7 @@
         if (!act) return;
 
         const nuevoEstado = document.getElementById("evalModalEstadoSelect").value;
-        const obs = document.getElementById("evalModalObservacion").value.trim() || "Actividad validada por el supervisor de área del CIT - UNP.";
+        const obs = document.getElementById("evalModalObservacion").value.trim() || "Actividad validada por el supervisor de área del OTI - UNP.";
 
         act.estadoRevision = nuevoEstado;
         act.calificacion = state.evalModalStars;
@@ -738,8 +738,8 @@
                 area: act.areaNombre,
                 canal: "WHATSAPP + CORREO",
                 destinatario: act.practicanteNombre,
-                mensajeWhatsapp: `*[CIT-UNP · OBSERVACIÓN EN BITÁCORA DE ACTIVIDADES]*\nLa actividad *${act.id}* (${act.categoriaTecnica}) presenta observaciones del supervisor *${act.supervisor}*.\nCalificación preliminar: ${act.calificacion}/5\nDetalle requerido: _${obs}_`,
-                asuntoCorreo: `[CIT-UNP] Solicitud de Subsanación de Actividad Técnica (${act.id})`,
+                mensajeWhatsapp: `*[OTI-UNP · OBSERVACIÓN EN BITÁCORA DE ACTIVIDADES]*\nLa actividad *${act.id}* (${act.categoriaTecnica}) presenta observaciones del supervisor *${act.supervisor}*.\nCalificación preliminar: ${act.calificacion}/5\nDetalle requerido: _${obs}_`,
+                asuntoCorreo: `[OTI-UNP] Solicitud de Subsanación de Actividad Técnica (${act.id})`,
                 atendida: false,
                 horaAtencion: "-"
             };
@@ -787,7 +787,7 @@
             document.getElementById("emailPreviewAsunto").textContent = selected.asuntoCorreo;
             document.getElementById("emailPreviewPara").textContent = selected.destinatario;
             document.getElementById("emailPreviewCuerpo").innerHTML = `
-                <p class="mb-2 small">Estimado(a) Supervisor(a) / Practicante del <strong>Centro de Informática y Telecomunicaciones (CIT - UNP)</strong>:</p>
+                <p class="mb-2 small">Estimado(a) Supervisor(a) / Practicante del <strong>Oficina de Tecnologías de la Información (OTI - UNP)</strong>:</p>
                 <p class="mb-2 small">El servicio institucional de seguimiento de prácticas ha emitido la siguiente notificación automática:</p>
                 <div class="p-2 bg-light border-start border-3 border-primary rounded small mb-2">
                     <strong>Categoría de Alerta:</strong> ${selected.tipo}<br>
@@ -795,7 +795,7 @@
                     <strong>Unidad Operativa:</strong> ${selected.area}<br>
                     <strong>Fecha y Hora Oficial:</strong> ${selected.fechaHora}
                 </div>
-                <p class="small text-secondary mb-0">Centro de Informática y Telecomunicaciones — Universidad Nacional de Piura.</p>
+                <p class="small text-secondary mb-0">Oficina de Tecnologías de la Información — Universidad Nacional de Piura.</p>
             `;
         }
 
@@ -866,7 +866,7 @@
 
         const inputRes = document.getElementById("detAlertaInputResolucion");
         if (inputRes) {
-            inputRes.value = a.resolucionSupervisor || (a.atendida ? "Incidencia verificada y coordinada por el supervisor de área del CIT - UNP." : "");
+            inputRes.value = a.resolucionSupervisor || (a.atendida ? "Incidencia verificada y coordinada por el supervisor de área del OTI - UNP." : "");
             inputRes.disabled = !rbac.puedeAtenderAlertas;
         }
         const btnSave = document.getElementById("btnGuardarSeguimientoAlerta");
@@ -887,7 +887,7 @@
         if (a.horaAtencion === "-") {
             a.horaAtencion = new Date().toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit", hour12: false });
         }
-        a.resolucionSupervisor = resolucion || "Atención confirmada por supervisión del CIT - UNP.";
+        a.resolucionSupervisor = resolucion || "Atención confirmada por supervisión del OTI - UNP.";
 
         const modalEl = document.getElementById("modalDetalleAlerta");
         bootstrap.Modal.getInstance(modalEl).hide();
@@ -999,8 +999,8 @@
             area: p.areaNombre,
             canal: "WHATSAPP + CORREO",
             destinatario: `${p.supervisor} / ${p.nombres}`,
-            mensajeWhatsapp: `*[CIT-UNP · AVISO PREVENTIVO DE SEGUIMIENTO HORARIO]*\nEl análisis de asistencia estima un *índice de riesgo de ausentismo de ${scoreActual}%* para *${p.nombres}*.\nFactor observado: _${p.factorPredictivo}_\nFecha estimada de culminación: *${p.fechaFinProyectada}*. Se recomienda coordinar programación de recuperación de horas.`,
-            asuntoCorreo: `[CIT-UNP] Aviso Preventivo de Seguimiento Horario (${scoreActual}%) — ${p.nombres}`,
+            mensajeWhatsapp: `*[OTI-UNP · AVISO PREVENTIVO DE SEGUIMIENTO HORARIO]*\nEl análisis de asistencia estima un *índice de riesgo de ausentismo de ${scoreActual}%* para *${p.nombres}*.\nFactor observado: _${p.factorPredictivo}_\nFecha estimada de culminación: *${p.fechaFinProyectada}*. Se recomienda coordinar programación de recuperación de horas.`,
+            asuntoCorreo: `[OTI-UNP] Aviso Preventivo de Seguimiento Horario (${scoreActual}%) — ${p.nombres}`,
             atendida: false,
             horaAtencion: "-"
         };
@@ -1218,7 +1218,7 @@
         document.getElementById("constMetricas").textContent = `Índice de Puntualidad: ${p.indicePuntualidad}% | Calificación Promedio de Actividades Técnicas: ${p.promedioEvaluacionActividades} / 5.0`;
         document.getElementById("constListaActividades").innerHTML = actsPrac.length
             ? actsPrac.map(a => `<li><strong>[${a.categoriaTecnica}]</strong> ${a.descripcion} <em>(Calificación del supervisor: ${a.calificacion || 5}/5 — Estado: ${a.estadoRevision})</em>.</li>`).join("")
-            : `<li>Desarrollo de sistemas informáticos, soporte a la infraestructura de red y mantenimiento preventivo en el CIT - UNP.</li>`;
+            : `<li>Desarrollo de sistemas informáticos, soporte a la infraestructura de red y mantenimiento preventivo en el OTI - UNP.</li>`;
     };
 
     window.exportarReporteCsv = function () {
@@ -1238,7 +1238,7 @@
         document.body.removeChild(link);
         showToastAlerta(
             "Consolidado exportado correctamente",
-            "Se descargó el archivo CSV/Excel con el registro de asistencia, horas acumuladas y calificaciones de actividades del CIT - UNP.",
+            "Se descargó el archivo CSV/Excel con el registro de asistencia, horas acumuladas y calificaciones de actividades del OTI - UNP.",
             "success"
         );
     };

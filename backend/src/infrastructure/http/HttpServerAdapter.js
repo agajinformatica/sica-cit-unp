@@ -72,7 +72,7 @@ class HttpServerAdapter {
                 if (req.method === "GET" && pathname === "/api/v1/health") {
                     return this._sendJson(res, 200, {
                         status: "OK",
-                        sistema: "SICA - CIT UNP (Sistema Inteligente de Control de Asistencia y Evaluación de Prácticas)",
+                        sistema: "SICA - OTI UNP (Sistema Inteligente de Control de Asistencia y Evaluación de Prácticas)",
                         arquitectura: "Hexagonal (Ports & Adapters)",
                         motorBaseDatos: process.env.DATABASE_URL ? "PostgreSQL (Conectado)" : "Persistencia Local JSON",
                         patronesActivos: ["Strategy (Ley 28518: 30h/48h)", "Repository (PostgreSQL)", "Adapter", "Composite Notification", "RBAC Auth"],
@@ -93,7 +93,7 @@ class HttpServerAdapter {
                     });
                 }
 
-                // 2. Estado completo del Dashboard CIT - UNP
+                // 2. Estado completo del Dashboard OTI - UNP
                 if (req.method === "GET" && pathname === "/api/v1/estado") {
                     const estado = await this.useCases.asistenciaRepository.obtenerEstadoCompleto();
                     return this._sendJson(res, 200, { ok: true, data: estado });
